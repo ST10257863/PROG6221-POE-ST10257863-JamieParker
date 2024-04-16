@@ -18,17 +18,14 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		static void Main(string[] args)
 		{
-			String ingredient;
-			String amount;
-			String measurment;
 			Console.WriteLine("Welcome to PROG6221 Reciper Keeper!");
-			//Console.WriteLine("Please enter the reciper name: ");
-			//ingredientCollection();
+			Console.WriteLine("Please enter the reciper name: ");
+			recipeName = Console.ReadLine();
+			ingredientCollection();
 			recipeStepCollection();
-
+			displayRecipe();
 
 		}
-
 		private static void ingredientCollection()
 		{
 			Console.WriteLine("----Ingredient Collection----");
@@ -43,7 +40,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				{
 					Console.WriteLine("Please enter a number.");
 				}
-
 			}
 			ingredientName = new string[ingredientCount];
 			ingredientAmount = new string[ingredientCount];
@@ -53,19 +49,12 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			{
 				Console.Write("\nPlease enter the name of the ingredient: ");
 				ingredientName[step] = Console.ReadLine();
-				Console.WriteLine("\nPlease enter the amount of ingredient in number form:");
+				Console.Write("\nPlease enter the amount of ingredient in number form:");
 				ingredientAmount[step] = Console.ReadLine();
-				Console.WriteLine("\nPlease enter the measurment type of the ingredient: ");
+				Console.Write("\nPlease enter the measurment type of the ingredient: ");
 				ingredientMeasurment[step] = Console.ReadLine();
 			}
-			//for (int step = 0; step < ingredientCount; step++)
-			//{
-			//	Console.WriteLine(ingredientName[step]);
-			//	Console.WriteLine(ingredientAmount[step]);
-			//	Console.WriteLine(ingredientMeasurment[step]);
-			//}
 		}
-
 		private static void recipeStepCollection()
 		{
 			Console.WriteLine("----Step Collection----");
@@ -84,22 +73,28 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			recipeSteps = new string[stepCount];
 
 			String recipeStepText = "";
+
 			for (int step = 0; step < stepCount; step++)
 			{
-				Console.WriteLine("Please enter \"BREAK\" to end the step");
-				while (recipeStepText.ToUpper() != "BREAK")
-				{
-					recipeStepText = Console.ReadLine();
-					recipeSteps[step] += recipeStepText;
-				}
+				Console.WriteLine("Please enter the directions for step " + (step + 1));
+				recipeStepText = Console.ReadLine();
+				recipeSteps[step] += "\n1." + recipeStepText;
 			}
+		}
 
-
-			Console.WriteLine("\nRecipe Steps:");
-
-			for (int i = 0; i < stepCount - 1; i++)
+		private static void displayRecipe()
+		{
+			;
+			Console.WriteLine("----" + recipeName + " Recipe----");
+            Console.WriteLine("\n\n----Ingredients----");
+            for (int step = 0; step < ingredientCount; step++)
 			{
-				Console.WriteLine(recipeSteps[i]);
+				Console.WriteLine(ingredientName[step] + " " + ingredientAmount[step] + ingredientMeasurment[step]);
+			}
+			Console.WriteLine("\n\n----Recipe Steps----");
+			for (int step = 0; step < stepCount; step++)
+			{
+				Console.WriteLine(recipeSteps[step]);
 			}
 		}
 	}
