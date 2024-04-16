@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace PROG6221_POE_ST10257863_JamieParker.Classes
 {
@@ -31,6 +26,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 				recipeName = value;
 			}
 		}
+
 		public int IngredientCount
 		{
 			get
@@ -42,6 +38,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 				ingredientCount = value;
 			}
 		}
+
 		public int StepCount
 		{
 			get
@@ -58,18 +55,20 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		{
 			this.ingredients = ingredients;
 		}
+
 		public Ingredient getIngredient(int ingredientIndex)
 		{
-		return ingredients[ingredientIndex];
+			return ingredients[ingredientIndex];
 		}
 
-		public void setRecipeSteps(string[] recipe)
+		public void setRecipeSteps(string[] recipeSteps)
 		{
-			this.recipeSteps = recipe;
+			this.recipeSteps = recipeSteps;
 		}
-		public string[] getRecipeSteps(int stepIndex)
+
+		public string getRecipeStep(int stepIndex)
 		{
-			return recipeSteps;
+			return recipeSteps[stepIndex];
 		}
 
 		public void setScale(double scale)
@@ -81,19 +80,30 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		{
 			return scale;
 		}
+
 		public void resetScale()
 		{
 			this.scale = 1;
 		}
 
-		public String displayRecipe()
+		public void Reset()
 		{
-			String fullRecipe = "";
+			recipeName = "";
+			ingredientCount = 0;
+			stepCount = 0;
+			ingredients = null;
+			recipeSteps = null;
+			scale = 1;
+		}
+
+		public string displayRecipe()
+		{
+			string fullRecipe = "";
 			fullRecipe += ("\n----" + this.recipeName + " Recipe----");
 			fullRecipe += ("\n\n----Ingredients----");
 			for (int step = 0; step < ingredientCount; step++)
 			{
-				fullRecipe += ("\n" + this.ingredients[step].Name + " " + (this.ingredients[step].Amount)*scale + this.ingredients[step].Measurment);
+				fullRecipe += ("\n" + this.ingredients[step].Name + " " + (this.ingredients[step].Amount) * scale + this.ingredients[step].Measurment);
 			}
 			fullRecipe += ("\n\n----Recipe Steps----");
 			for (int step = 0; step < stepCount; step++)
