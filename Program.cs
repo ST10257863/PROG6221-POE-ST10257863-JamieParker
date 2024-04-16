@@ -85,7 +85,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.WriteLine("\n\n----Ingredients----");
 			for (int step = 0; step < ingredientCount; step++)
 			{
-				Console.WriteLine(ingredients[step].fetchIngredient());
+				Console.WriteLine(ingredients[step].Name + " " + ingredients[step].Amount+ ingredients[step].Measurment);
 			}
 			Console.WriteLine("\n\n----Recipe Steps----");
 			for (int step = 0; step < stepCount; step++)

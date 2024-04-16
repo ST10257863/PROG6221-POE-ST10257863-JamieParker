@@ -57,11 +57,11 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			}
 		}
 
-		public string fetchIngredient()
-		{
-			string ingredient;
-			ingredient = (this.name + " " + this.amount + this.measurment);
-			return ingredient;
-		}
+		//public string fetchIngredient()
+		//{
+		//	string ingredient;
+		//	ingredient = (this.name + " " + this.amount + this.measurment);
+		//	return ingredient;
+		//}
 	}
 }
