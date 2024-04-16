@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PROG6221_POE_ST10257863_JamieParker.Classes;
+using System;
 
 namespace PROG6221_POE_ST10257863_JamieParker
 {
@@ -11,9 +8,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		private static string recipeName;
 		private static int ingredientCount;
 		private static int stepCount;
-		private static string[] ingredientName;
-		private static string[] ingredientAmount;
-		private static string[] ingredientMeasurment;
+		private static Ingredient[] ingredients;
 		private static string[] recipeSteps;
 
 		static void Main(string[] args)
@@ -35,24 +30,25 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				try
 				{
 					ingredientCount = int.Parse(Console.ReadLine());
+					
 				}
 				catch (Exception ex)
 				{
 					Console.WriteLine("Please enter a number.");
 				}
 			}
-			ingredientName = new string[ingredientCount];
-			ingredientAmount = new string[ingredientCount];
-			ingredientMeasurment = new string[ingredientCount];
+			ingredients = new Ingredient[ingredientCount];
+
 
 			for (int step = 0; step < ingredientCount; step++)
 			{
 				Console.Write("\nPlease enter the name of the ingredient: ");
-				ingredientName[step] = Console.ReadLine();
+				string ingredientName = Console.ReadLine();
 				Console.Write("\nPlease enter the amount of ingredient in number form:");
-				ingredientAmount[step] = Console.ReadLine();
+				double ingredientAmount = double.Parse(Console.ReadLine());
 				Console.Write("\nPlease enter the measurment type of the ingredient: ");
-				ingredientMeasurment[step] = Console.ReadLine();
+				string ingredientMeasurment = Console.ReadLine();
+				ingredients[step] = new Ingredient(ingredientName, ingredientAmount, ingredientMeasurment);
 			}
 		}
 		private static void recipeStepCollection()
@@ -72,7 +68,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 			recipeSteps = new string[stepCount];
 
-			String recipeStepText = "";
+			string recipeStepText = "";
 
 			for (int step = 0; step < stepCount; step++)
 			{
@@ -86,10 +82,10 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		{
 			;
 			Console.WriteLine("----" + recipeName + " Recipe----");
-            Console.WriteLine("\n\n----Ingredients----");
-            for (int step = 0; step < ingredientCount; step++)
+			Console.WriteLine("\n\n----Ingredients----");
+			for (int step = 0; step < ingredientCount; step++)
 			{
-				Console.WriteLine(ingredientName[step] + " " + ingredientAmount[step] + ingredientMeasurment[step]);
+				Console.WriteLine(ingredients[step].fetchIngredient());
 			}
 			Console.WriteLine("\n\n----Recipe Steps----");
 			for (int step = 0; step < stepCount; step++)
