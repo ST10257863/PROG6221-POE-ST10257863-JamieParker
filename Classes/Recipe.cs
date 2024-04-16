@@ -14,6 +14,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		private int stepCount;
 		private Ingredient[] ingredients;
 		private string[] recipeSteps;
+		private double scale = 1;
 
 		public Recipe()
 		{
@@ -62,15 +63,28 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		return ingredients[ingredientIndex];
 		}
 
-		public void setRecipe(string[] recipe)
+		public void setRecipeSteps(string[] recipe)
 		{
 			this.recipeSteps = recipe;
 		}
-		public string[] getRecipe(int stepIndex)
+		public string[] getRecipeSteps(int stepIndex)
 		{
 			return recipeSteps;
 		}
 
+		public void setScale(double scale)
+		{
+			this.scale = scale;
+		}
+
+		public double getScale()
+		{
+			return scale;
+		}
+		public void resetScale()
+		{
+			this.scale = 1;
+		}
 
 		public String displayRecipe()
 		{
@@ -79,7 +93,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			fullRecipe += ("\n\n----Ingredients----");
 			for (int step = 0; step < ingredientCount; step++)
 			{
-				fullRecipe += ("\n" + this.ingredients[step].Name + " " + this.ingredients[step].Amount + this.ingredients[step].Measurment);
+				fullRecipe += ("\n" + this.ingredients[step].Name + " " + (this.ingredients[step].Amount)*scale + this.ingredients[step].Measurment);
 			}
 			fullRecipe += ("\n\n----Recipe Steps----");
 			for (int step = 0; step < stepCount; step++)

@@ -14,14 +14,20 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Welcome to PROG6221 Reciper Keeper!");
-			Console.WriteLine("Please enter the reciper name: ");
-			recipes.RecipeName = Console.ReadLine();
-			ingredientCollection();
-			recipeStepCollection();
-			Console.WriteLine(recipes.displayRecipe());
-			
-
+			int exit = 0;
+			while (exit != 1)
+			{
+				Console.WriteLine("Welcome to PROG6221 Reciper Keeper!");
+				Console.WriteLine("Please enter the recipe name: ");
+				recipes.RecipeName = Console.ReadLine();
+				ingredientCollection();
+				recipeStepCollection();
+				Console.WriteLine(recipes.displayRecipe());
+				recipeScale();
+				Console.WriteLine(recipes.displayRecipe());
+				resetRecipeScale();
+				exit = 1;
+			}
 		}
 		private static void ingredientCollection()
 		{
@@ -51,10 +57,10 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				double ingredientAmount = double.Parse(Console.ReadLine());
 				Console.Write("\nPlease enter the measurment type of the ingredient: ");
 				string ingredientMeasurment = Console.ReadLine();
-				
+
 				ingredients[step] = new Ingredient(ingredientName, ingredientAmount, ingredientMeasurment);
 			}
-			recipes.setIngredients( ingredients );
+			recipes.setIngredients(ingredients);
 		}
 		private static void recipeStepCollection()
 		{
@@ -81,9 +87,28 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				recipeStepText = Console.ReadLine();
 				recipeSteps[step] += "\n" + step + 1 + ". " + recipeStepText;
 			}
-			recipes.setRecipe(recipeSteps);
+			recipes.setRecipeSteps(recipeSteps);
 		}
 
+		private static void recipeScale()
+		{
+			Console.WriteLine("Would you like to scale the recipe?\n1. yes\n2. no");
+			if (Console.ReadLine() == "1")
+			{
+				Console.WriteLine("please enter a number to multiply the recipe by.");
+				recipes.setScale(double.Parse(Console.ReadLine()));
+			}
+		}
 
+		private static void resetRecipeScale()
+		{
+			Console.WriteLine("Would you like to reset scale the recipe?\n1. yes\n2. no");
+			if (Console.ReadLine() == "1")
+			{
+				Console.WriteLine("The recipe scale has been reset.");
+				recipes.resetScale();
+				Console.WriteLine(recipes.displayRecipe());
+			}
+		}
 	}
 }
