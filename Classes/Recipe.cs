@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace PROG6221_POE_ST10257863_JamieParker.Classes
 {
 	internal class Recipe
@@ -10,84 +9,52 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		private Ingredient[] ingredients;
 		private string[] recipeSteps;
 		private double scale = 1;
-
 		public Recipe()
 		{
 		}
-
 		public string RecipeName
 		{
-			get
-			{
-				return recipeName;
-			}
-			set
-			{
-				recipeName = value;
-			}
+			get; set;
 		}
-
 		public int IngredientCount
 		{
-			get
-			{
-				return ingredientCount;
-			}
-			set
-			{
-				ingredientCount = value;
-			}
+			get; set;
 		}
-
 		public int StepCount
 		{
-			get
-			{
-				return stepCount;
-			}
-			set
-			{
-				stepCount = value;
-			}
+			get; set;
 		}
-
 		public void setIngredients(Ingredient[] ingredients)
 		{
 			this.ingredients = ingredients;
 		}
-
 		public Ingredient getIngredient(int ingredientIndex)
 		{
 			return ingredients[ingredientIndex];
 		}
-
 		public void setRecipeSteps(string[] recipeSteps)
 		{
 			this.recipeSteps = recipeSteps;
 		}
-
 		public string getRecipeStep(int stepIndex)
 		{
 			return recipeSteps[stepIndex];
 		}
-
 		public void setScale(double scale)
 		{
 			this.scale = scale;
 		}
-
 		public double getScale()
 		{
 			return scale;
 		}
-
 		public void resetScale()
 		{
 			this.scale = 1;
 		}
-
 		public void Reset()
 		{
+			//Sets all the values back to their original state.
 			recipeName = "";
 			ingredientCount = 0;
 			stepCount = 0;
@@ -95,9 +62,9 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			recipeSteps = null;
 			scale = 1;
 		}
-
 		public string displayRecipe()
 		{
+			//Concatenates the different text into a string and returns it.
 			string fullRecipe = "";
 			fullRecipe += ("\n----" + this.recipeName + " Recipe----");
 			fullRecipe += ("\n\n----Ingredients----");
