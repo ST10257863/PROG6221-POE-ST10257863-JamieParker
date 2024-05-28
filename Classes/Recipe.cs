@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Text;
+
 namespace PROG6221_POE_ST10257863_JamieParker.Classes
 {
 	internal class Recipe
 	{
-		private string recipeName;
-		private int ingredientCount;
-		private int stepCount;
+
 		private Ingredient[] ingredients;
 		private string[] recipeSteps;
 		private double scale = 1;
@@ -55,29 +54,28 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		public void Reset()
 		{
 			//Sets all the values back to their original state.
-			recipeName = "";
-			ingredientCount = 0;
-			stepCount = 0;
+			RecipeName = "";
+			IngredientCount = 0;
+			StepCount = 0;
 			ingredients = null;
 			recipeSteps = null;
-			scale = 1;
+			resetScale();
 		}
 		public string displayRecipe()
 		{
-			//Concatenates the different text into a string and returns it.
-			string fullRecipe = "";
-			fullRecipe += ("\n----" + this.recipeName + " Recipe----");
-			fullRecipe += ("\n\n----Ingredients----");
-			for (int step = 0; step < ingredientCount; step++)
+			StringBuilder fullRecipe = new StringBuilder();
+			fullRecipe.AppendLine("\n----" + this.RecipeName + " Recipe----");
+			fullRecipe.AppendLine("\n----Ingredients----");
+			for (int step = 0; step < IngredientCount; step++)
 			{
-				fullRecipe += ("\n" + this.ingredients[step].Name + " " + (this.ingredients[step].Amount) * scale + this.ingredients[step].Measurment);
+				fullRecipe.AppendLine(this.ingredients[step].Name + " " + (this.ingredients[step].Amount * scale) + " " + this.ingredients[step].Measurment);
 			}
-			fullRecipe += ("\n\n----Recipe Steps----");
-			for (int step = 0; step < stepCount; step++)
+			fullRecipe.AppendLine("\n\n----Recipe Steps----");
+			for (int step = 0; step < StepCount; step++)
 			{
-				fullRecipe += ("\n" + this.recipeSteps[step]);
+				fullRecipe.AppendLine(this.recipeSteps[step]);
 			}
-			return fullRecipe;
+			return fullRecipe.ToString();
 		}
 	}
 }
