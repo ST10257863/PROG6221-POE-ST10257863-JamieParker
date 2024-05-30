@@ -89,7 +89,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		}
 
 		// Method to reset the scale factor to 1
-		public void resetScale()
+		public void ResetScale()
 		{
 			this.scale = 1;
 		}
@@ -102,7 +102,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			StepCount = 0;
 			ingredients = null;
 			recipeSteps = null;
-			resetScale();
+			ResetScale();
 			TotalCalories = 0;
 		}
 

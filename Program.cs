@@ -46,12 +46,12 @@ namespace PROG6221_POE_ST10257863_JamieParker
 							bool finishedCreating = false;
 							while (!finishedCreating)
 							{
+								Console.Clear();
 								Console.WriteLine("What would you like to do?");
 								Console.WriteLine("1. Enter recipe name");
 								Console.WriteLine("2. Enter ingredients");
 								Console.WriteLine("3. Enter steps");
-								Console.WriteLine("4. Scale recipe");
-								Console.WriteLine("5. Finish creating recipe");
+								Console.WriteLine("4. Finish creating recipe");
 
 								string createSelection = Console.ReadLine();
 								switch (createSelection)
@@ -70,10 +70,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 										recipeStepCollection();
 										break;
 									case "4":
-										Console.Clear();
-										recipeScale();
-										break;
-									case "5":
 										finishedCreating = true;
 										break;
 									default:
@@ -86,6 +82,12 @@ namespace PROG6221_POE_ST10257863_JamieParker
 						case "2":
 							// Select recipe
 							Console.Clear();
+							if (recipes.Count == 0)
+							{
+								Console.WriteLine("No recipes found, please create a recipe to begin.");
+								Console.ReadLine();
+								break;
+							}
 							recipes.Sort((r1, r2) => r1.RecipeName.CompareTo(r2.RecipeName)); // Sort recipes by name
 							Console.WriteLine("Here are the available recipes:");
 							foreach (var recipe in recipes)
@@ -100,6 +102,53 @@ namespace PROG6221_POE_ST10257863_JamieParker
 								if (recipe.RecipeName == recipeName)
 								{
 									currentRecipe = recipe;
+									bool finishedEditing = false;
+									while (!finishedEditing)
+									{
+										Console.Clear();
+										Console.WriteLine("What would you like to do with this recipe?");
+										Console.WriteLine("1. Display recipe");
+										Console.WriteLine("2. Scale recipe");
+										Console.WriteLine("3. Reset scale");
+										Console.WriteLine("4. Delete recipe");
+										Console.WriteLine("5. Go back to main menu");
+
+										string editSelection = Console.ReadLine();
+										switch (editSelection)
+										{
+											case "1":
+												Console.Clear();
+												Console.WriteLine(currentRecipe.displayRecipe());
+												Console.WriteLine("Press enter to continue.");
+												Console.ReadLine(); // Wait for user to press enter before continuing
+												break;
+											case "2":
+												Console.Clear();
+												recipeScale();
+												Console.WriteLine(currentRecipe.displayRecipe());
+												Console.WriteLine("Press enter to continue.");
+												Console.ReadLine(); // Wait for user to press enter before continuing
+												break;
+											case "3":
+												Console.Clear();
+												currentRecipe.ResetScale();
+												Console.WriteLine(currentRecipe.displayRecipe());
+												Console.WriteLine("Press enter to continue.");
+												Console.ReadLine(); // Wait for user to press enter before continuing
+												break;
+											case "4":
+												Console.Clear();
+												DeleteRecipe();
+												finishedEditing = true;
+												break;
+											case "5":
+												finishedEditing = true;
+												break;
+											default:
+												Console.WriteLine("Invalid selection. Please enter a number between 1 and 5.");
+												break;
+										}
+									}
 									break;
 								}
 							}
@@ -214,24 +263,8 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		// Method to scale the recipe
 		private static void recipeScale()
 		{
-			Console.WriteLine("Would you like to scale the recipe?\n1. Yes\n2. No");
-			string input = Console.ReadLine();
-			if (input == "1")
-			{
-				double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
-				currentRecipe.setScale(scale);
-			}
-			else if (input != "2")
-			{
-				Console.WriteLine("Invalid option. Please enter 1 or 2.");
-			}
-		}
-
-		// Method to ask if the user wants to reset the recipe
-		private static bool askToResetRecipe()
-		{
-			Console.WriteLine("Would you like to reset the recipe and start again?\n1. Yes\n2. No");
-			return Console.ReadLine() == "1";
+			double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
+			currentRecipe.setScale(scale);
 		}
 
 		// Method to reset the recipe
@@ -239,6 +272,17 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		{
 			currentRecipe.Reset(); // Implement a method in Recipe class to reset its state
 			Console.WriteLine("Recipe has been reset. Let's start again!");
+		}
+
+		private static void DeleteRecipe()
+		{
+			Console.WriteLine("Are you sure you would like to delete the recipe?\n1. Yes 2. No");
+			if (Console.ReadLine() == "1")
+			{
+				recipes.Remove(currentRecipe);
+				currentRecipe = null;
+				Console.WriteLine("Recipe has been deleted.");
+			}
 		}
 	}
 }
