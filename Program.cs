@@ -6,7 +6,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 {
 	internal class Program
 	{
-		// Declare the ingredients and recipe steps arrays, and the Recipe object
 		private static Ingredient[] ingredients;
 		private static string[] recipeSteps;
 		private static List<Recipe> recipes = new List<Recipe>();
@@ -14,11 +13,9 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		static void Main(string[] args)
 		{
-			// Main loop for the application
 			bool exitRequested = false;
 			while (!exitRequested)
 			{
-				// Display the main menu and handle user selection
 				string selection = DisplayMainMenu();
 				switch (selection)
 				{
@@ -43,23 +40,17 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		private static string DisplayMainMenu()
 		{
-			// Clear the console for a clean display
 			Console.Clear();
-
-			// Display the main menu
 			Console.WriteLine("Please select an option:");
 			Console.WriteLine("1. Create new recipe");
 			Console.WriteLine("2. Select recipe");
 			Console.WriteLine("3. Display all recipes");
 			Console.WriteLine("4. Exit");
-
-			// Handle the user's selection
 			return Console.ReadLine();
 		}
 
 		private static void CreateNewRecipe()
 		{
-			// Create new recipe
 			currentRecipe = new Recipe();
 			recipes.Add(currentRecipe);
 			currentRecipe.CalorieCountExceeded += NotifyCalorieCountExceeded;
@@ -74,16 +65,16 @@ namespace PROG6221_POE_ST10257863_JamieParker
 						EnterRecipeName();
 						break;
 					case "2":
-						ingredientCollection();
+						CollectIngredients();
 						break;
 					case "3":
-						recipeStepCollection();
+						CollectRecipeSteps();
 						break;
 					case "4":
 						finishedCreating = true;
 						break;
 					default:
-						Console.WriteLine("Invalid selection. Please enter a number between 1 and 5.");
+						Console.WriteLine("Invalid selection. Please enter a number between 1 and 4.");
 						break;
 				}
 			}
@@ -97,7 +88,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.WriteLine("2. Enter ingredients");
 			Console.WriteLine("3. Enter steps");
 			Console.WriteLine("4. Finish creating recipe");
-
 			return Console.ReadLine();
 		}
 
@@ -110,7 +100,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		private static void SelectRecipe()
 		{
-			// Select recipe
 			Console.Clear();
 			if (recipes.Count == 0)
 			{
@@ -118,7 +107,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				Console.ReadLine();
 				return;
 			}
-			recipes.Sort((r1, r2) => r1.RecipeName.CompareTo(r2.RecipeName)); // Sort recipes by name
+			recipes.Sort((r1, r2) => r1.RecipeName.CompareTo(r2.RecipeName));
 			Console.WriteLine("Here are the available recipes:");
 			foreach (var recipe in recipes)
 			{
@@ -126,17 +115,12 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 			Console.WriteLine("Please enter the recipe name to select: ");
 			string recipeName = Console.ReadLine();
-			currentRecipe = null;
-			foreach (var recipe in recipes)
+			currentRecipe = recipes.Find(recipe => recipe.RecipeName == recipeName);
+			if (currentRecipe != null)
 			{
-				if (recipe.RecipeName == recipeName)
-				{
-					currentRecipe = recipe;
-					EditRecipe();
-					break;
-				}
+				EditRecipe();
 			}
-			if (currentRecipe == null)
+			else
 			{
 				Console.WriteLine("Recipe not found.");
 			}
@@ -186,16 +170,17 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.Clear();
 			Console.WriteLine(currentRecipe.displayRecipe());
 			Console.WriteLine("Press enter to continue.");
-			Console.ReadLine(); // Wait for user to press enter before continuing
+			Console.ReadLine();
 		}
 
 		private static void ScaleRecipe()
 		{
 			Console.Clear();
-			recipeScale();
+			double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
+			currentRecipe.setScale(scale);
 			Console.WriteLine(currentRecipe.displayRecipe());
 			Console.WriteLine("Press enter to continue.");
-			Console.ReadLine(); // Wait for user to press enter before continuing
+			Console.ReadLine();
 		}
 
 		private static void ResetRecipe()
@@ -204,7 +189,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			currentRecipe.ResetScale();
 			Console.WriteLine(currentRecipe.displayRecipe());
 			Console.WriteLine("Press enter to continue.");
-			Console.ReadLine(); // Wait for user to press enter before continuing
+			Console.ReadLine();
 		}
 
 		private static void DeleteRecipe()
@@ -220,7 +205,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		private static void DisplayAllRecipes()
 		{
-			// Display all recipes
 			Console.Clear();
 			if (recipes.Count == 0)
 			{
@@ -235,13 +219,11 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
-		// Define a method that matches the CalorieCountHandler delegate signature
 		public static void NotifyCalorieCountExceeded(int calories)
 		{
 			Console.WriteLine($"Alert: The calorie count has exceeded the limit! Current count: {calories}");
 		}
 
-		// Method to read an integer from console with validation
 		private static int ReadIntFromConsole(string prompt)
 		{
 			int result;
@@ -253,7 +235,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return result;
 		}
 
-		// Method to read a double from console with validation
 		private static double ReadDoubleFromConsole(string prompt)
 		{
 			double result;
@@ -265,11 +246,10 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return result;
 		}
 
-		// Method to collect ingredients
-		private static void ingredientCollection()
+		private static void CollectIngredients()
 		{
 			Console.WriteLine("Please enter the number of ingredients: ");
-			currentRecipe.IngredientCount = Convert.ToInt32(Console.ReadLine());
+			currentRecipe.IngredientCount = ReadIntFromConsole("");
 			ingredients = new Ingredient[currentRecipe.IngredientCount];
 			for (int i = 0; i < currentRecipe.IngredientCount; i++)
 			{
@@ -277,32 +257,19 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				Console.WriteLine("Please enter the ingredient name: ");
 				ingredients[i].Name = Console.ReadLine();
 				Console.WriteLine("Please enter the ingredient amount: ");
-				ingredients[i].Amount = Convert.ToDouble(Console.ReadLine());
+				ingredients[i].Amount = ReadDoubleFromConsole("");
 				Console.WriteLine("Please enter the ingredient measurement: ");
 				ingredients[i].Measurment = Console.ReadLine();
 				Console.WriteLine("Please enter the ingredient calories: ");
-				ingredients[i].Calories = Convert.ToDouble(Console.ReadLine());
+				ingredients[i].Calories = ReadDoubleFromConsole("");
 			}
 			currentRecipe.setIngredients(ingredients);
 		}
 
-		// Method to collect recipe steps
-		private static void recipeStepCollection()
+		private static void CollectRecipeSteps()
 		{
 			Console.WriteLine("----Step Collection----");
 			currentRecipe.StepCount = ReadIntFromConsole("Please enter the number of steps: ");
-
-			while (currentRecipe.StepCount <= 0)
-			{
-				try
-				{
-					currentRecipe.StepCount = int.Parse(Console.ReadLine());
-				}
-				catch (Exception)
-				{
-					Console.WriteLine("Please enter a valid number.");
-				}
-			}
 			recipeSteps = new string[currentRecipe.StepCount];
 			for (int step = 0; step < currentRecipe.StepCount; step++)
 			{
@@ -310,13 +277,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				recipeSteps[step] = Console.ReadLine();
 			}
 			currentRecipe.setRecipeSteps(recipeSteps);
-		}
-
-		// Method to scale the recipe
-		private static void recipeScale()
-		{
-			double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
-			currentRecipe.setScale(scale);
 		}
 	}
 }
