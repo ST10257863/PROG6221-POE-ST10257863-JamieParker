@@ -33,5 +33,10 @@
 		{
 			get; set;
 		}
+		public string FoodGroup
+		{
+			get; set;
+		} // New property for food group
+
 	}
 }

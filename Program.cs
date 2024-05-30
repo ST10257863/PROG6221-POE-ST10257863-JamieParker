@@ -213,7 +213,9 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		// Method to delete a recipe
 		private static void DeleteRecipe()
 		{
+			Console.ForegroundColor = ConsoleColor.Red; // Change text color to red
 			Console.WriteLine("Are you sure you would like to delete the recipe?\n1. Yes 2. No");
+			Console.ResetColor(); // Reset text color
 			if (Console.ReadLine() == "1")
 			{
 				recipes.Remove(currentRecipe);
@@ -242,7 +244,9 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		// Method to notify when calorie count is exceeded
 		public static void NotifyCalorieCountExceeded(int calories)
 		{
+			Console.ForegroundColor = ConsoleColor.DarkYellow; // Change text color to dark yellow (closest to orange)
 			Console.WriteLine($"Alert: The calorie count has exceeded the limit! Current count: {calories}");
+			Console.ResetColor(); // Reset text color
 		}
 
 		// Method to read an integer from console
@@ -286,6 +290,35 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				ingredients[i].Measurment = Console.ReadLine();
 				Console.WriteLine("Please enter the ingredient calories: ");
 				ingredients[i].Calories = ReadDoubleFromConsole("");
+				Console.WriteLine("Please select the ingredient food group: ");
+				Console.WriteLine("1. Dairy");
+				Console.WriteLine("2. Meat");
+				Console.WriteLine("3. Vegetables");
+				Console.WriteLine("4. Fruits");
+				Console.WriteLine("5. Grains");
+				string foodGroupSelection = Console.ReadLine();
+				switch (foodGroupSelection)
+				{
+					case "1":
+						ingredients[i].FoodGroup = "Dairy";
+						break;
+					case "2":
+						ingredients[i].FoodGroup = "Meat";
+						break;
+					case "3":
+						ingredients[i].FoodGroup = "Vegetables";
+						break;
+					case "4":
+						ingredients[i].FoodGroup = "Fruits";
+						break;
+					case "5":
+						ingredients[i].FoodGroup = "Grains";
+						break;
+					default:
+						Console.WriteLine("Invalid selection. Please enter a number between 1 and 5.");
+						i--; // Repeat the loop for the same ingredient
+						continue;
+				}
 			}
 			currentRecipe.setIngredients(ingredients);
 		}
