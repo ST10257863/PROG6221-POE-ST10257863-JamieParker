@@ -7,8 +7,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 	internal class Program
 	{
 		// Declare variables
-		private static Ingredient[] ingredients;
-		private static string[] recipeSteps;
+
 		private static List<Recipe> recipes = new List<Recipe>();
 		private static Recipe currentRecipe;
 
@@ -277,20 +276,19 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		private static void CollectIngredients()
 		{
 			Console.WriteLine("Please enter the number of ingredients: ");
-			currentRecipe.IngredientCount = ReadIntFromConsole("");
-			ingredients = new Ingredient[currentRecipe.IngredientCount];
-			for (int i = 0; i < currentRecipe.IngredientCount; i++)
+			int ingredientCount = ReadIntFromConsole("");
+			for (int i = 0; i < ingredientCount; i++)
 			{
-				ingredients[i] = new Ingredient();
+				var ingredient = new Ingredient();
 				Console.WriteLine("Please enter the ingredient name: ");
-				ingredients[i].Name = Console.ReadLine();
+				ingredient.Name = Console.ReadLine();
 				Console.WriteLine("Please enter the ingredient amount: ");
-				ingredients[i].Amount = ReadDoubleFromConsole("");
+				ingredient.Amount = ReadDoubleFromConsole("");
 				Console.WriteLine("Please enter the ingredient measurement: ");
-				ingredients[i].Measurment = Console.ReadLine();
+				ingredient.Measurement = Console.ReadLine();
 				Console.WriteLine("Please enter the ingredient calories: ");
-				ingredients[i].Calories = ReadDoubleFromConsole("");
-				Console.WriteLine("Please select the ingredient food group: ");
+				ingredient.Calories = ReadDoubleFromConsole("");
+				Console.WriteLine("Please enter the ingredient food group: ");
 				Console.WriteLine("1. Dairy");
 				Console.WriteLine("2. Meat");
 				Console.WriteLine("3. Vegetables");
@@ -300,41 +298,40 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				switch (foodGroupSelection)
 				{
 					case "1":
-						ingredients[i].FoodGroup = "Dairy";
+						ingredient.FoodGroup = "Dairy";
 						break;
 					case "2":
-						ingredients[i].FoodGroup = "Meat";
+						ingredient.FoodGroup = "Meat";
 						break;
 					case "3":
-						ingredients[i].FoodGroup = "Vegetables";
+						ingredient.FoodGroup = "Vegetables";
 						break;
 					case "4":
-						ingredients[i].FoodGroup = "Fruits";
+						ingredient.FoodGroup = "Fruits";
 						break;
 					case "5":
-						ingredients[i].FoodGroup = "Grains";
+						ingredient.FoodGroup = "Grains";
 						break;
 					default:
 						Console.WriteLine("Invalid selection. Please enter a number between 1 and 5.");
 						i--; // Repeat the loop for the same ingredient
 						continue;
 				}
+				currentRecipe.AddIngredient(ingredient);
 			}
-			currentRecipe.setIngredients(ingredients);
 		}
 
 		// Method to collect recipe steps
 		private static void CollectRecipeSteps()
 		{
 			Console.WriteLine("----Step Collection----");
-			currentRecipe.StepCount = ReadIntFromConsole("Please enter the number of steps: ");
-			recipeSteps = new string[currentRecipe.StepCount];
-			for (int step = 0; step < currentRecipe.StepCount; step++)
+			int stepCount = ReadIntFromConsole("Please enter the number of steps: ");
+			for (int step = 0; step < stepCount; step++)
 			{
 				Console.WriteLine("Please enter the directions for step " + (step + 1));
-				recipeSteps[step] = Console.ReadLine();
+				string recipeStep = Console.ReadLine();
+				currentRecipe.AddRecipeStep(recipeStep);
 			}
-			currentRecipe.setRecipeSteps(recipeSteps);
 		}
 	}
 }

@@ -24,6 +24,10 @@
 			get; set;
 		}
 
+		public Ingredient()
+		{
+		}
+
 		public Ingredient(string name, double amount, string measurement, double calories, string foodGroup)
 		{
 			Name = name;
