@@ -94,10 +94,8 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		public void Reset()
 		{
 			RecipeName = "";
-			IngredientCount = 0;
-			StepCount = 0;
-			Ingredients = null;
-			RecipeSteps = null;
+			Ingredients.Clear();
+			RecipeSteps.Clear();
 			ResetScale();
 			TotalCalories = 0;
 		}
