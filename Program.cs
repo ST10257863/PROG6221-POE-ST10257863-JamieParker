@@ -1,5 +1,7 @@
 ﻿using PROG6221_POE_ST10257863_JamieParker.Classes;
 using System;
+using System.Collections.Generic;
+
 namespace PROG6221_POE_ST10257863_JamieParker
 {
 	internal class Program
@@ -7,13 +9,11 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		// Declare the ingredients and recipe steps arrays, and the Recipe object
 		private static Ingredient[] ingredients;
 		private static string[] recipeSteps;
-		private static Recipe recipes = new Recipe();
+		private static List<Recipe> recipes = new List<Recipe>();
+		private static Recipe currentRecipe;
 
 		static void Main(string[] args)
 		{
-			// Subscribe to the CalorieCountExceeded event
-			recipes.CalorieCountExceeded += NotifyCalorieCountExceeded;
-
 			// Main loop for the application
 			bool exitRequested = false;
 			while (!exitRequested)
@@ -27,7 +27,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 					// Display the main menu
 					Console.WriteLine("Please select an option:");
-					Console.WriteLine("1. Enter recipe");
+					Console.WriteLine("1. Create new recipe");
 					Console.WriteLine("2. Select recipe");
 					Console.WriteLine("3. Display all recipes");
 					Console.WriteLine("4. Exit");
@@ -36,51 +36,45 @@ namespace PROG6221_POE_ST10257863_JamieParker
 					string selection = Console.ReadLine();
 					switch (selection)
 					{
-						case "1":
-							// Enter recipe
-							bool validRecipeSelection = false;
-							while (!validRecipeSelection)
-							{
-								// Clear the console for a clean display
-								Console.Clear();
 
-								// Display the recipe menu
-								Console.WriteLine("Please select an option:");
+						case "1":
+							// Create new recipe
+							currentRecipe = new Recipe();
+							recipes.Add(currentRecipe);
+							currentRecipe.CalorieCountExceeded += NotifyCalorieCountExceeded;
+
+							bool finishedCreating = false;
+							while (!finishedCreating)
+							{
+								Console.WriteLine("What would you like to do?");
 								Console.WriteLine("1. Enter recipe name");
 								Console.WriteLine("2. Enter ingredients");
-								Console.WriteLine("3. Enter recipe steps");
+								Console.WriteLine("3. Enter steps");
 								Console.WriteLine("4. Scale recipe");
-								Console.WriteLine("5. Back to main menu");
+								Console.WriteLine("5. Finish creating recipe");
 
-								// Handle the user's selection
-								string recipeSelection = Console.ReadLine();
-								switch (recipeSelection)
+								string createSelection = Console.ReadLine();
+								switch (createSelection)
 								{
 									case "1":
-										// Enter recipe name
 										Console.Clear();
 										Console.WriteLine("Please enter the recipe name: ");
-										recipes.RecipeName = Console.ReadLine();
+										currentRecipe.RecipeName = Console.ReadLine();
 										break;
 									case "2":
-										// Enter ingredients
 										Console.Clear();
 										ingredientCollection();
 										break;
 									case "3":
-										// Enter recipe steps
 										Console.Clear();
 										recipeStepCollection();
 										break;
 									case "4":
-										// Scale recipe
 										Console.Clear();
 										recipeScale();
-										Console.WriteLine(recipes.displayRecipe());
 										break;
 									case "5":
-										// Back to main menu
-										validRecipeSelection = true;
+										finishedCreating = true;
 										break;
 									default:
 										Console.WriteLine("Invalid selection. Please enter a number between 1 and 5.");
@@ -92,15 +86,39 @@ namespace PROG6221_POE_ST10257863_JamieParker
 						case "2":
 							// Select recipe
 							Console.Clear();
+							recipes.Sort((r1, r2) => r1.RecipeName.CompareTo(r2.RecipeName)); // Sort recipes by name
+							Console.WriteLine("Here are the available recipes:");
+							foreach (var recipe in recipes)
+							{
+								Console.WriteLine(recipe.RecipeName);
+							}
 							Console.WriteLine("Please enter the recipe name to select: ");
 							string recipeName = Console.ReadLine();
-							// Add code here to select and display the recipe based on the entered name
-							validSelection = true;
+							currentRecipe = null;
+							foreach (var recipe in recipes)
+							{
+								if (recipe.RecipeName == recipeName)
+								{
+									currentRecipe = recipe;
+									break;
+								}
+							}
+							if (currentRecipe == null)
+							{
+								Console.WriteLine("Recipe not found.");
+							}
+							else
+							{
+								validSelection = true;
+							}
 							break;
 						case "3":
 							// Display all recipes
 							Console.Clear();
-							// Add code here to display all recipes
+							foreach (var recipe in recipes)
+							{
+								Console.WriteLine(recipe.displayRecipe());
+							}
 							validSelection = true;
 							break;
 						case "4":
@@ -150,9 +168,9 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		private static void ingredientCollection()
 		{
 			Console.WriteLine("Please enter the number of ingredients: ");
-			recipes.IngredientCount = Convert.ToInt32(Console.ReadLine());
-			ingredients = new Ingredient[recipes.IngredientCount];
-			for (int i = 0; i < recipes.IngredientCount; i++)
+			currentRecipe.IngredientCount = Convert.ToInt32(Console.ReadLine());
+			ingredients = new Ingredient[currentRecipe.IngredientCount];
+			for (int i = 0; i < currentRecipe.IngredientCount; i++)
 			{
 				ingredients[i] = new Ingredient();
 				Console.WriteLine("Please enter the ingredient name: ");
@@ -164,33 +182,33 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				Console.WriteLine("Please enter the ingredient calories: ");
 				ingredients[i].Calories = Convert.ToDouble(Console.ReadLine());
 			}
-			recipes.setIngredients(ingredients);
+			currentRecipe.setIngredients(ingredients);
 		}
 
 		// Method to collect recipe steps
 		private static void recipeStepCollection()
 		{
 			Console.WriteLine("----Step Collection----");
-			recipes.StepCount = ReadIntFromConsole("Please enter the number of steps: ");
+			currentRecipe.StepCount = ReadIntFromConsole("Please enter the number of steps: ");
 
-			while (recipes.StepCount <= 0)
+			while (currentRecipe.StepCount <= 0)
 			{
 				try
 				{
-					recipes.StepCount = int.Parse(Console.ReadLine());
+					currentRecipe.StepCount = int.Parse(Console.ReadLine());
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					Console.WriteLine("Please enter a valid number.");
 				}
 			}
-			recipeSteps = new string[recipes.StepCount];
-			for (int step = 0; step < recipes.StepCount; step++)
+			recipeSteps = new string[currentRecipe.StepCount];
+			for (int step = 0; step < currentRecipe.StepCount; step++)
 			{
-				Console.WriteLine("Please enter the directions for step " + step + 1);
+				Console.WriteLine("Please enter the directions for step " + (step + 1));
 				recipeSteps[step] = Console.ReadLine();
 			}
-			recipes.setRecipeSteps(recipeSteps);
+			currentRecipe.setRecipeSteps(recipeSteps);
 		}
 
 		// Method to scale the recipe
@@ -201,7 +219,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			if (input == "1")
 			{
 				double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
-				recipes.setScale(scale);
+				currentRecipe.setScale(scale);
 			}
 			else if (input != "2")
 			{
@@ -219,7 +237,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		// Method to reset the recipe
 		private static void ResetRecipe()
 		{
-			recipes.Reset(); // Implement a method in Recipe class to reset its state
+			currentRecipe.Reset(); // Implement a method in Recipe class to reset its state
 			Console.WriteLine("Recipe has been reset. Let's start again!");
 		}
 	}
