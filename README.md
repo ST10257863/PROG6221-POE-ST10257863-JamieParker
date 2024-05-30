@@ -17,7 +17,7 @@ This project is a console-based recipe management system developed in C# using t
 1. Ensure you have .NET Framework 4.8 installed.
 2. Clone the repository:
    ```sh
-   git clone https://https://github.com/ST10257863/PROG6221-POE-ST10257863-JamieParker
+   git clone https://github.com/ST10257863/PROG6221-POE-ST10257863-JamieParker
    ```
 3. Open the solution in Visual Studio.
 4. Restore the NuGet packages.
