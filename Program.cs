@@ -11,35 +11,115 @@ namespace PROG6221_POE_ST10257863_JamieParker
 
 		static void Main(string[] args)
 		{
+			// Subscribe to the CalorieCountExceeded event
+			recipes.CalorieCountExceeded += NotifyCalorieCountExceeded;
+
+			// Main loop for the application
 			bool exitRequested = false;
 			while (!exitRequested)
 			{
-				// Welcome message and recipe name input
-				Console.WriteLine("Welcome to PROG6221 Recipe Keeper!");
-				Console.WriteLine("Please enter the recipe name: ");
-				recipes.RecipeName = Console.ReadLine();
-
-				// Collect ingredients and recipe steps
-				ingredientCollection();
-				recipeStepCollection();
-
-				// Display the recipe
-				Console.WriteLine(recipes.displayRecipe());
-
-				// Ask for recipe scaling
-				recipeScale();
-				Console.WriteLine(recipes.displayRecipe());
-
-				// Ask to reset the recipe
-				if (askToResetRecipe())
+				// Display the main menu and handle user selection
+				bool validSelection = false;
+				while (!validSelection)
 				{
-					ResetRecipe();
-				}
-				else
-				{
-					exitRequested = true;
+					// Clear the console for a clean display
+					Console.Clear();
+
+					// Display the main menu
+					Console.WriteLine("Please select an option:");
+					Console.WriteLine("1. Enter recipe");
+					Console.WriteLine("2. Select recipe");
+					Console.WriteLine("3. Display all recipes");
+					Console.WriteLine("4. Exit");
+
+					// Handle the user's selection
+					string selection = Console.ReadLine();
+					switch (selection)
+					{
+						case "1":
+							// Enter recipe
+							bool validRecipeSelection = false;
+							while (!validRecipeSelection)
+							{
+								// Clear the console for a clean display
+								Console.Clear();
+
+								// Display the recipe menu
+								Console.WriteLine("Please select an option:");
+								Console.WriteLine("1. Enter recipe name");
+								Console.WriteLine("2. Enter ingredients");
+								Console.WriteLine("3. Enter recipe steps");
+								Console.WriteLine("4. Scale recipe");
+								Console.WriteLine("5. Back to main menu");
+
+								// Handle the user's selection
+								string recipeSelection = Console.ReadLine();
+								switch (recipeSelection)
+								{
+									case "1":
+										// Enter recipe name
+										Console.Clear();
+										Console.WriteLine("Please enter the recipe name: ");
+										recipes.RecipeName = Console.ReadLine();
+										break;
+									case "2":
+										// Enter ingredients
+										Console.Clear();
+										ingredientCollection();
+										break;
+									case "3":
+										// Enter recipe steps
+										Console.Clear();
+										recipeStepCollection();
+										break;
+									case "4":
+										// Scale recipe
+										Console.Clear();
+										recipeScale();
+										Console.WriteLine(recipes.displayRecipe());
+										break;
+									case "5":
+										// Back to main menu
+										validRecipeSelection = true;
+										break;
+									default:
+										Console.WriteLine("Invalid selection. Please enter a number between 1 and 5.");
+										break;
+								}
+							}
+							validSelection = true;
+							break;
+						case "2":
+							// Select recipe
+							Console.Clear();
+							Console.WriteLine("Please enter the recipe name to select: ");
+							string recipeName = Console.ReadLine();
+							// Add code here to select and display the recipe based on the entered name
+							validSelection = true;
+							break;
+						case "3":
+							// Display all recipes
+							Console.Clear();
+							// Add code here to display all recipes
+							validSelection = true;
+							break;
+						case "4":
+							// Exit
+							exitRequested = true;
+							validSelection = true;
+							break;
+						default:
+							Console.WriteLine("Invalid selection. Please enter a number between 1 and 4.");
+							break;
+					}
 				}
 			}
+		}
+
+		// Define a method that matches the CalorieCountHandler delegate signature
+		public static void NotifyCalorieCountExceeded(int calories)
+		{
+			Console.WriteLine($"Alert: The calorie count has exceeded the limit! Current count: {calories}");
 		}
 
 		// Method to read an integer from console with validation
@@ -69,17 +149,20 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		// Method to collect ingredients
 		private static void ingredientCollection()
 		{
-			Console.WriteLine("----Ingredient Collection----");
-			recipes.IngredientCount = ReadIntFromConsole("How many ingredients are there in your recipe?\nPlease enter here: ");
+			Console.WriteLine("Please enter the number of ingredients: ");
+			recipes.IngredientCount = Convert.ToInt32(Console.ReadLine());
 			ingredients = new Ingredient[recipes.IngredientCount];
-			for (int step = 0; step < recipes.IngredientCount; step++)
+			for (int i = 0; i < recipes.IngredientCount; i++)
 			{
-				Console.Write("\nPlease enter the name of the ingredient: ");
-				string ingredientName = Console.ReadLine();
-				double ingredientAmount = ReadDoubleFromConsole("\nPlease enter the amount of ingredient in number form:");
-				Console.Write("\nPlease enter the measurement type of the ingredient: ");
-				string ingredientMeasurement = Console.ReadLine();
-				ingredients[step] = new Ingredient { Name = ingredientName, Amount = ingredientAmount, Measurment = ingredientMeasurement };
+				ingredients[i] = new Ingredient();
+				Console.WriteLine("Please enter the ingredient name: ");
+				ingredients[i].Name = Console.ReadLine();
+				Console.WriteLine("Please enter the ingredient amount: ");
+				ingredients[i].Amount = Convert.ToDouble(Console.ReadLine());
+				Console.WriteLine("Please enter the ingredient measurement: ");
+				ingredients[i].Measurment = Console.ReadLine();
+				Console.WriteLine("Please enter the ingredient calories: ");
+				ingredients[i].Calories = Convert.ToDouble(Console.ReadLine());
 			}
 			recipes.setIngredients(ingredients);
 		}
