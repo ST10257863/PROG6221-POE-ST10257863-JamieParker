@@ -183,7 +183,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		private static void DisplayRecipe()
 		{
 			Console.Clear();
-			Console.WriteLine(currentRecipe.displayRecipe());
+			Console.WriteLine(currentRecipe.DisplayRecipe());
 			Console.WriteLine("Press enter to continue.");
 			Console.ReadLine();
 		}
@@ -194,7 +194,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.Clear();
 			double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
 			currentRecipe.setScale(scale);
-			Console.WriteLine(currentRecipe.displayRecipe());
+			Console.WriteLine(currentRecipe.DisplayRecipe());
 			Console.WriteLine("Press enter to continue.");
 			Console.ReadLine();
 		}
@@ -204,7 +204,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		{
 			Console.Clear();
 			currentRecipe.ResetScale();
-			Console.WriteLine(currentRecipe.displayRecipe());
+			Console.WriteLine(currentRecipe.DisplayRecipe());
 			Console.WriteLine("Press enter to continue.");
 			Console.ReadLine();
 		}
@@ -235,9 +235,10 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			{
 				foreach (var recipe in recipes)
 				{
-					Console.WriteLine(recipe.displayRecipe());
+					Console.WriteLine(recipe.DisplayRecipe());
 				}
 			}
+			Console.ReadLine();
 		}
 
 		// Method to notify when calorie count is exceeded

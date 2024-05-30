@@ -102,19 +102,19 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			TotalCalories = 0;
 		}
 
-		public string displayRecipe()
+		public string DisplayRecipe()
 		{
 			StringBuilder fullRecipe = new StringBuilder();
 			TotalCalories = 0;
 			fullRecipe.AppendLine("\n----" + this.RecipeName + " Recipe----");
 			fullRecipe.AppendLine("\n----Ingredients----");
-			for (int step = 0; step < IngredientCount; step++)
+			for (int step = 0; step < Ingredients.Count; step++)
 			{
 				fullRecipe.AppendLine(this.Ingredients[step].Name + " " + (this.Ingredients[step].Amount * scale) + " " + this.Ingredients[step].Measurement);
 				TotalCalories += (this.Ingredients[step].Calories * scale);
 			}
 			fullRecipe.AppendLine("\n\n----Recipe Steps----");
-			for (int step = 0; step < StepCount; step++)
+			for (int step = 0; step < RecipeSteps.Count; step++)
 			{
 				fullRecipe.AppendLine(this.RecipeSteps[step]);
 			}
