@@ -6,16 +6,20 @@ namespace PROG6221_POE_ST10257863_JamieParker
 {
 	internal class Program
 	{
+		// Declare variables
 		private static Ingredient[] ingredients;
 		private static string[] recipeSteps;
 		private static List<Recipe> recipes = new List<Recipe>();
 		private static Recipe currentRecipe;
 
+		// Main method
 		static void Main(string[] args)
 		{
+			// Loop until user requests to exit
 			bool exitRequested = false;
 			while (!exitRequested)
 			{
+				// Display main menu and get user selection
 				string selection = DisplayMainMenu();
 				switch (selection)
 				{
@@ -38,6 +42,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
+		// Method to display main menu
 		private static string DisplayMainMenu()
 		{
 			Console.Clear();
@@ -49,15 +54,19 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return Console.ReadLine();
 		}
 
+		// Method to create a new recipe
 		private static void CreateNewRecipe()
 		{
+			// Initialize new recipe and add to list
 			currentRecipe = new Recipe();
 			recipes.Add(currentRecipe);
 			currentRecipe.CalorieCountExceeded += NotifyCalorieCountExceeded;
 
+			// Loop until user finishes creating recipe
 			bool finishedCreating = false;
 			while (!finishedCreating)
 			{
+				// Display create menu and get user selection
 				string createSelection = DisplayCreateMenu();
 				switch (createSelection)
 				{
@@ -80,6 +89,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
+		// Method to display create menu
 		private static string DisplayCreateMenu()
 		{
 			Console.Clear();
@@ -91,6 +101,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return Console.ReadLine();
 		}
 
+		// Method to enter recipe name
 		private static void EnterRecipeName()
 		{
 			Console.Clear();
@@ -98,6 +109,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			currentRecipe.RecipeName = Console.ReadLine();
 		}
 
+		// Method to select a recipe
 		private static void SelectRecipe()
 		{
 			Console.Clear();
@@ -107,6 +119,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				Console.ReadLine();
 				return;
 			}
+			// Sort recipes by name
 			recipes.Sort((r1, r2) => r1.RecipeName.CompareTo(r2.RecipeName));
 			Console.WriteLine("Here are the available recipes:");
 			foreach (var recipe in recipes)
@@ -126,8 +139,10 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
+		// Method to edit a recipe
 		private static void EditRecipe()
 		{
+			// Loop until user finishes editing
 			bool finishedEditing = false;
 			while (!finishedEditing)
 			{
@@ -165,6 +180,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
+		// Method to display a recipe
 		private static void DisplayRecipe()
 		{
 			Console.Clear();
@@ -173,6 +189,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.ReadLine();
 		}
 
+		// Method to scale a recipe
 		private static void ScaleRecipe()
 		{
 			Console.Clear();
@@ -183,6 +200,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.ReadLine();
 		}
 
+		// Method to reset a recipe
 		private static void ResetRecipe()
 		{
 			Console.Clear();
@@ -192,6 +210,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.ReadLine();
 		}
 
+		// Method to delete a recipe
 		private static void DeleteRecipe()
 		{
 			Console.WriteLine("Are you sure you would like to delete the recipe?\n1. Yes 2. No");
@@ -203,6 +222,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
+		// Method to display all recipes
 		private static void DisplayAllRecipes()
 		{
 			Console.Clear();
@@ -219,11 +239,13 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			}
 		}
 
+		// Method to notify when calorie count is exceeded
 		public static void NotifyCalorieCountExceeded(int calories)
 		{
 			Console.WriteLine($"Alert: The calorie count has exceeded the limit! Current count: {calories}");
 		}
 
+		// Method to read an integer from console
 		private static int ReadIntFromConsole(string prompt)
 		{
 			int result;
@@ -235,6 +257,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return result;
 		}
 
+		// Method to read a double from console
 		private static double ReadDoubleFromConsole(string prompt)
 		{
 			double result;
@@ -246,6 +269,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return result;
 		}
 
+		// Method to collect ingredients
 		private static void CollectIngredients()
 		{
 			Console.WriteLine("Please enter the number of ingredients: ");
@@ -266,6 +290,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			currentRecipe.setIngredients(ingredients);
 		}
 
+		// Method to collect recipe steps
 		private static void CollectRecipeSteps()
 		{
 			Console.WriteLine("----Step Collection----");
