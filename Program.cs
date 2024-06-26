@@ -14,7 +14,6 @@ namespace PROG6221_POE_ST10257863_JamieParker
 	internal class Program
 	{
 		// Declare variables
-
 		private static List<Recipe> recipes = new List<Recipe>();
 		private static Recipe currentRecipe;
 
@@ -77,18 +76,22 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				switch (createSelection)
 				{
 					case "1":
+						Console.Clear();
 						EnterRecipeName();
 						break;
 					case "2":
+						Console.Clear();
 						CollectIngredients();
 						break;
 					case "3":
+						Console.Clear();
 						CollectRecipeSteps();
 						break;
 					case "4":
 						finishedCreating = true;
 						break;
 					default:
+						Console.Clear();
 						Console.WriteLine("Invalid selection. Please enter a number between 1 and 4.");
 						break;
 				}
@@ -107,13 +110,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			return Console.ReadLine();
 		}
 
-		// Method to enter recipe name
-		private static void EnterRecipeName()
-		{
-			Console.Clear();
-			Console.WriteLine("Please enter the recipe name: ");
-			currentRecipe.RecipeName = Console.ReadLine();
-		}
+
 
 		// Method to select a recipe
 		private static void SelectRecipe()
@@ -248,54 +245,38 @@ namespace PROG6221_POE_ST10257863_JamieParker
 			Console.ReadLine();
 		}
 
-		// Method to notify when calorie count is exceeded
-		public static void NotifyCalorieCountExceeded(int calories)
-		{
-			Console.ForegroundColor = ConsoleColor.DarkYellow; // Change text color to dark yellow (closest to orange)
-			Console.WriteLine($"Alert: The calorie count has exceeded the limit! Current count: {calories}");
-			Console.ResetColor(); // Reset text color
-		}
 
-		// Method to read an integer from console
-		private static int ReadIntFromConsole(string prompt)
-		{
-			int result;
-			Console.Write(prompt);
-			while (!int.TryParse(Console.ReadLine(), out result) || result <= 0)
-			{
-				Console.WriteLine("Please enter a valid number.");
-			}
-			return result;
-		}
 
-		// Method to read a double from console
-		private static double ReadDoubleFromConsole(string prompt)
+		// Method to enter recipe name
+		private static void EnterRecipeName()
 		{
-			double result;
-			Console.Write(prompt);
-			while (!double.TryParse(Console.ReadLine(), out result) || result <= 0)
-			{
-				Console.WriteLine("Please enter a valid number.");
-			}
-			return result;
+			Console.Clear();
+			Console.WriteLine("Please enter the recipe name: ");
+			currentRecipe.RecipeName = Console.ReadLine();
 		}
 
 		// Method to collect ingredients
 		private static void CollectIngredients()
 		{
+			Console.Clear();
 			Console.WriteLine("Please enter the number of ingredients: ");
 			int ingredientCount = ReadIntFromConsole("");
 			for (int i = 0; i < ingredientCount; i++)
 			{
+				Console.Clear();
 				var ingredient = new Ingredient();
-				Console.WriteLine("Please enter the ingredient name: ");
+				Console.WriteLine($"Please enter ingredient {i + 1}'s name: ");
 				ingredient.Name = Console.ReadLine();
+				Console.Clear();
 				Console.WriteLine("Please enter the ingredient amount: ");
 				ingredient.Amount = ReadDoubleFromConsole("");
+				Console.Clear();
 				Console.WriteLine("Please enter the ingredient measurement: ");
 				ingredient.Measurement = Console.ReadLine();
+				Console.Clear();
 				Console.WriteLine("Please enter the ingredient calories: ");
 				ingredient.Calories = ReadDoubleFromConsole("");
+				Console.Clear();
 				Console.WriteLine("Please enter the ingredient food group: ");
 				Console.WriteLine("1. Dairy");
 				Console.WriteLine("2. Meat");
@@ -340,6 +321,39 @@ namespace PROG6221_POE_ST10257863_JamieParker
 				string recipeStep = Console.ReadLine();
 				currentRecipe.AddRecipeStep(recipeStep);
 			}
+		}
+
+
+		// Method to read an integer from console
+		private static int ReadIntFromConsole(string prompt)
+		{
+			int result;
+			Console.Write(prompt);
+			while (!int.TryParse(Console.ReadLine(), out result) || result <= 0)
+			{
+				Console.WriteLine("Please enter a valid number.");
+			}
+			return result;
+		}
+
+		// Method to read a double from console
+		private static double ReadDoubleFromConsole(string prompt)
+		{
+			double result;
+			Console.Write(prompt);
+			while (!double.TryParse(Console.ReadLine(), out result) || result <= 0)
+			{
+				Console.WriteLine("Please enter a valid number.");
+			}
+			return result;
+		}
+
+		// Method to notify when calorie count is exceeded
+		public static void NotifyCalorieCountExceeded(int calories)
+		{
+			Console.ForegroundColor = ConsoleColor.DarkYellow; // Change text color to dark yellow (closest to orange)
+			Console.WriteLine($"Alert: The calorie count has exceeded the limit! Current count: {calories}");
+			Console.ResetColor(); // Reset text color
 		}
 	}
 }
