@@ -123,7 +123,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PROG6221-POE-ST10257863-JamieParker\RecipeManagerConsole.csproj">
+    <ProjectReference Include="..\RecipeManagerConsole\RecipeManagerConsole.csproj">
       <Project>{1ccae6d7-635d-4698-8f14-fba854f9a724}</Project>
       <Name>RecipeManagerConsole</Name>
     </ProjectReference>
