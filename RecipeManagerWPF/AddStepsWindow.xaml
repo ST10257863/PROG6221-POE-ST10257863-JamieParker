@@ -1,7 +1,9 @@
 ﻿<Window x:Class="RecipeManagerWPF.AddStepWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add Step" Height="200" Width="400"
+        Title="Add Step" 
+        Height="200" 
+        Width="400"
         ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
