@@ -56,7 +56,6 @@ namespace RecipeManagerWPF
 			}
 		}
 
-
 		private void DisplayRecipesButton_Click(object sender, RoutedEventArgs e)
 		{
 			// Display all recipes in the ListBox
