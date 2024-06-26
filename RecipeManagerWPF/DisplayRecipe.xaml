@@ -45,13 +45,13 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock x:Name="CalorieCountText" 
-                   Text=""
-                   FontWeight="Bold"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Center"
-                   Margin="10,10,10,10"
-                   Grid.Row="2"/>
+        <TextBlock x:Name="CalorieCountText"
+           Text=""
+           FontWeight="Bold"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Center"
+           Margin="10,10,10,10"
+           Grid.Row="2"/>
 
         <ListBox x:Name="StepsListBox" 
                  Grid.Row="3" 

@@ -33,6 +33,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		{
 			get; set;
 		}
+
 		public double TotalCalories
 		{
 			get
@@ -40,7 +41,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 				CalculateTotalCalories();
 				return totalCalories;
 			}
-			set
+			private set
 			{
 				totalCalories = (int)value;
 				if (totalCalories * scale > 300)
@@ -59,6 +60,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		public void AddIngredient(Ingredient ingredient)
 		{
 			Ingredients.Add(ingredient);
+			CalculateTotalCalories();
 		}
 
 		public void AddRecipeStep(string step)
@@ -66,22 +68,22 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			RecipeSteps.Add(step);
 		}
 
-		public Ingredient getIngredient(int ingredientIndex)
+		public Ingredient GetIngredient(int ingredientIndex)
 		{
 			return Ingredients[ingredientIndex];
 		}
 
-		public string getRecipeStep(int stepIndex)
+		public string GetRecipeStep(int stepIndex)
 		{
 			return RecipeSteps[stepIndex];
 		}
 
-		public void setScale(double scale)
+		public void SetScale(double scale)
 		{
 			this.scale = scale;
 		}
 
-		public double getScale()
+		public double GetScale()
 		{
 			return scale;
 		}
@@ -91,13 +93,14 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			this.scale = 1;
 		}
 
-		public void CalculateTotalCalories()
+		private void CalculateTotalCalories()
 		{
-			this.totalCalories = 0;
+			totalCalories = 0;
 			foreach (var item in Ingredients)
 			{
 				totalCalories += Convert.ToInt32(item.Calories);
 			}
+			TotalCalories = totalCalories; // Trigger the calorie check
 		}
 
 		public void Reset()
@@ -113,17 +116,17 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 		{
 			StringBuilder fullRecipe = new StringBuilder();
 			TotalCalories = 0;
-			fullRecipe.AppendLine("\n----" + this.RecipeName + " Recipe----");
+			fullRecipe.AppendLine("\n----" + RecipeName + " Recipe----");
 			fullRecipe.AppendLine("\n----Ingredients----");
 			for (int step = 0; step < Ingredients.Count; step++)
 			{
-				fullRecipe.AppendLine(this.Ingredients[step].Name + " " + (this.Ingredients[step].Amount * scale) + " " + this.Ingredients[step].Measurement);
-				TotalCalories += (this.Ingredients[step].Calories * scale);
+				fullRecipe.AppendLine(Ingredients[step].Name + " " + (Ingredients[step].Amount * scale) + " " + Ingredients[step].Measurement);
+				TotalCalories += (Ingredients[step].Calories * scale);
 			}
 			fullRecipe.AppendLine("\n\n----Recipe Steps----");
 			for (int step = 0; step < RecipeSteps.Count; step++)
 			{
-				fullRecipe.AppendLine(this.RecipeSteps[step]);
+				fullRecipe.AppendLine(RecipeSteps[step]);
 			}
 			fullRecipe.AppendLine("\n\nTotal Calories: " + TotalCalories);
 			return fullRecipe.ToString();

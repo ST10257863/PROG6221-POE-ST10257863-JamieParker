@@ -197,7 +197,7 @@ namespace PROG6221_POE_ST10257863_JamieParker
 		{
 			Console.Clear();
 			double scale = ReadDoubleFromConsole("Please enter a number to multiply the recipe by:");
-			currentRecipe.setScale(scale);
+			currentRecipe.SetScale(scale);
 			Console.WriteLine(currentRecipe.DisplayRecipe());
 			Console.WriteLine("Press enter to continue.");
 			Console.ReadLine();
