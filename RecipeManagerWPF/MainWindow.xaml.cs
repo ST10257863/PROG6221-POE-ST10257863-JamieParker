@@ -58,17 +58,7 @@ namespace RecipeManagerWPF
 
 		private void RefreshRecipesButton_Click(object sender, RoutedEventArgs e)
 		{
-			ClearDuplicates();
-			// Sort the unique recipe names
-			List<string> recipeNames = new List<string>();
-			foreach (Recipe recipe in recipes)
-			{
-				recipeNames.Add(recipe.RecipeName);
-			}
-			recipeNames.Sort();
-
-			// Display the sorted recipe names in the ListBox
-			RecipesListBox.ItemsSource = recipeNames;
+			RefreshRecipesList();
 		}
 
 		private void FillRecipes_Click(object sender, RoutedEventArgs e)
@@ -119,8 +109,19 @@ namespace RecipeManagerWPF
 				recipeNames.Add(recipe.RecipeName);
 				recipeNames.Sort();
 			}
-			RecipesListBox.ItemsSource = recipeNames;
+			ClearDuplicates();
+			RefreshRecipesList();
+		}
+		private void RefreshRecipesList()
+		{
+			ClearDuplicates();
 
+			// Sort the unique recipe names
+			List<string> recipeNames = recipes.Select(r => r.RecipeName).ToList();
+			recipeNames.Sort();
+
+			// Display the sorted recipe names in the ListBox
+			RecipesListBox.ItemsSource = recipeNames;
 		}
 
 		public void ClearDuplicates()
@@ -148,7 +149,12 @@ namespace RecipeManagerWPF
 			}
 			recipes.Clear();
 			recipes = uniqueRecipes;
-
+		}
+		private void DisplayRecipeDetails(Recipe recipe)
+		{
+			// Pass selectedRecipe to a new window for display
+			DisplayRecipe detailsWindow = new DisplayRecipe(recipe);
+			detailsWindow.ShowDialog(); // Show the window as a dialog
 		}
 	}
 }

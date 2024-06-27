@@ -1,5 +1,8 @@
 ﻿using PROG6221_POE_ST10257863_JamieParker.Classes;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace RecipeManagerWPF
@@ -22,9 +25,11 @@ namespace RecipeManagerWPF
 			// Initialize CalorieCountText with initial value
 			UpdateCalorieCountText(recipe.TotalCalories);
 
-
+			// Set initial items sources
+			IngredientsListBox.ItemsSource = currentRecipe.Ingredients;
+			StepsListBox.ItemsSource = currentRecipe.RecipeSteps;
 		}
-
+	
 		private void Recipe_CalorieCountExceeded(int calories)
 		{
 			// Update the text whenever CalorieCountExceeded event is triggered
@@ -54,17 +59,29 @@ namespace RecipeManagerWPF
 		{
 			// Update the current recipe with changes
 			currentRecipe = editedRecipe;
-			DataContext = currentRecipe; // Refresh DataContext to reflect changes
 
-			// Unsubscribe from the event to avoid memory leaks
-			var editRecipeWindow = sender as CreateRecipeWindow;
-			if (editRecipeWindow != null)
-			{
-				editRecipeWindow.RecipeEdited -= EditRecipeWindow_RecipeEdited;
-			}
+			// Refresh DataContext to reflect changes
+			DataContext = null; // Reset DataContext
+			DataContext = currentRecipe; // Assign new DataContext
 
 			// Update the calorie count text with the new value
 			UpdateCalorieCountText(currentRecipe.TotalCalories);
+
+			// Rebind ListBox items sources
+			RebindIngredientsListBox();
+			RebindStepsListBox();
+		}
+
+		private void RebindIngredientsListBox()
+		{
+			IngredientsListBox.ItemsSource = null; // Clear existing binding
+			IngredientsListBox.ItemsSource = currentRecipe.Ingredients; // Rebind to updated collection
+		}
+
+		private void RebindStepsListBox()
+		{
+			StepsListBox.ItemsSource = null; // Clear existing binding
+			StepsListBox.ItemsSource = currentRecipe.RecipeSteps; // Rebind to updated collection
 		}
 	}
 }
