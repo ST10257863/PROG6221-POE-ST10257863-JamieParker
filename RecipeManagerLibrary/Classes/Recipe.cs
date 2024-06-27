@@ -100,7 +100,7 @@ namespace PROG6221_POE_ST10257863_JamieParker.Classes
 			{
 				totalCalories += Convert.ToInt32(item.Calories);
 			}
-			TotalCalories = totalCalories; // Trigger the calorie check
+			TotalCalories = totalCalories * scale; // Trigger the calorie check
 		}
 
 		public void Reset()

@@ -31,7 +31,27 @@
                 Grid.Row="0"
                 Click="EditRecipe_Click"/>
 
+        <ComboBox x:Name="ScaleComboBox"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Width="100"
+                  Margin="10,10,10,10"
+                  Grid.Row="0"
+                  SelectedIndex="1">
+            <ComboBoxItem Content="0.5"/>
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="3"/>
+        </ComboBox>
 
+        <Button x:Name="ScaleRecipe"
+                Content="Scale"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Width="60"
+                Margin="10,10,10,10"
+                Grid.Row="0"
+                Click="ScaleRecipe_Click"/>
 
         <ListBox x:Name="IngredientsListBox" 
          Grid.Row="1" 

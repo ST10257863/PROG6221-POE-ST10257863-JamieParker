@@ -1,8 +1,8 @@
 ﻿using PROG6221_POE_ST10257863_JamieParker.Classes;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 
 namespace RecipeManagerWPF
@@ -10,11 +10,13 @@ namespace RecipeManagerWPF
 	public partial class DisplayRecipe : Window
 	{
 		private Recipe currentRecipe;
+		private double originalScale; // Store the original scale before scaling
 
 		public DisplayRecipe(Recipe recipe)
 		{
 			InitializeComponent();
 			currentRecipe = recipe;
+			originalScale = recipe.GetScale(); // Store the original scale
 
 			// Set DataContext to the recipe to enable data binding
 			DataContext = recipe;
@@ -25,14 +27,99 @@ namespace RecipeManagerWPF
 			// Initialize CalorieCountText with initial value
 			UpdateCalorieCountText(recipe.TotalCalories);
 
-			// Set initial items sources
-			IngredientsListBox.ItemsSource = currentRecipe.Ingredients;
-			StepsListBox.ItemsSource = currentRecipe.RecipeSteps;
+			// Set initial items sources and update for scale
+			UpdateIngredientsList();
+			UpdateStepsList();
 		}
 
+		private void Recipe_CalorieCountExceeded(int calories)
+		{
+			// Update the text whenever CalorieCountExceeded event is triggered
+			UpdateCalorieCountText(calories);
+		}
 
+		private void UpdateCalorieCountText(double calories)
+		{
+			if (calories > 300)
+			{
+				CalorieCountText.Text = $"Warning: Total calories ({calories}) exceed 300!";
+				CalorieCountText.Foreground = Brushes.Red; // Change text color to red
+			}
+			else
+			{
+				CalorieCountText.Text = $"Total Calories: {calories}";
+				CalorieCountText.Foreground = Brushes.Black; // Reset text color
+			}
+		}
 
+		private void EditRecipe_Click(object sender, RoutedEventArgs e)
+		{
+			var editRecipeWindow = new CreateRecipeWindow(currentRecipe);
+			editRecipeWindow.RecipeEdited += EditRecipeWindow_RecipeEdited;
+			editRecipeWindow.ShowDialog();
+		}
 
+		private void ScaleRecipe_Click(object sender, RoutedEventArgs e)
+		{
+			if (ScaleComboBox.SelectedItem != null)
+			{
+				string selectedScale = (ScaleComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+				if (double.TryParse(selectedScale, out double scaleValue))
+				{
+					// Reset to original scale first
+					currentRecipe.SetScale(originalScale);
+
+					// Then apply the new scale
+					currentRecipe.SetScale(scaleValue);
+
+					// Update DataContext to reflect scaled recipe
+					DataContext = null; // Reset DataContext
+					DataContext = currentRecipe; // Assign new DataContext
+
+					// Update the calorie count text with the new value
+					UpdateCalorieCountText(currentRecipe.TotalCalories);
+
+					// Update the ingredients and steps lists
+					UpdateIngredientsList();
+					UpdateStepsList();
+
+					// Update originalScale to the current scale
+					originalScale = scaleValue;
+				}
+			}
+		}
+
+		private void EditRecipeWindow_RecipeEdited(object sender, Recipe editedRecipe)
+		{
+			// Update the current recipe with changes
+			currentRecipe = editedRecipe;
+
+			// Refresh DataContext to reflect changes
+			DataContext = null; // Reset DataContext
+			DataContext = currentRecipe; // Assign new DataContext
+
+			// Update the calorie count text with the new value
+			UpdateCalorieCountText(currentRecipe.TotalCalories);
+
+			// Update the ingredients and steps lists
+			UpdateIngredientsList();
+			UpdateStepsList();
+
+			// Update originalScale to the current scale
+			originalScale = currentRecipe.GetScale();
+		}
+
+		private void UpdateIngredientsList()
+		{
+			IngredientsListBox.ItemsSource = null;
+			IngredientsListBox.ItemsSource = ScaleIngredients(currentRecipe.Ingredients);
+		}
+
+		private void UpdateStepsList()
+		{
+			StepsListBox.ItemsSource = null;
+			StepsListBox.ItemsSource = currentRecipe.RecipeSteps;
+		}
 
 		private void IngredientsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -58,13 +145,10 @@ namespace RecipeManagerWPF
 				var textBlock = FindVisualChild<TextBlock>(listBoxItem);
 				if (textBlock != null)
 				{
-
 					if (textBlock.Foreground == Brushes.Black)
-						textBlock.Foreground = Brushes.DarkGray;
-					// Toggle text color to gray if not already gray
+						textBlock.Foreground = Brushes.DarkGray; // Toggle text color to gray if not already gray
 					else if (textBlock.Foreground == Brushes.DarkGray)
-						textBlock.Foreground = Brushes.Black;
-
+						textBlock.Foreground = Brushes.Black; // Toggle text color to black if currently gray
 				}
 			}
 		}
@@ -88,64 +172,27 @@ namespace RecipeManagerWPF
 			return null;
 		}
 
-
-
-
-
-
-		private void Recipe_CalorieCountExceeded(int calories)
+		private List<Ingredient> ScaleIngredients(List<Ingredient> ingredients)
 		{
-			// Update the text whenever CalorieCountExceeded event is triggered
-			UpdateCalorieCountText(calories);
-		}
+			// Create a new list to hold scaled ingredients without modifying original
+			List<Ingredient> scaledIngredients = new List<Ingredient>();
 
-		private void UpdateCalorieCountText(double calories)
-		{
-			if (calories > 300)
+			foreach (var ingredient in ingredients)
 			{
-				CalorieCountText.Text = $"Warning: Total calories ({calories}) exceed 300!";
-				CalorieCountText.Foreground = Brushes.Red; // Change text color to red
+				// Create a new Ingredient object with scaled values for display
+				Ingredient scaledIngredient = new Ingredient
+				{
+					Name = ingredient.Name,
+					Amount = ingredient.Amount * currentRecipe.GetScale(), // Scale the amount
+					Measurement = ingredient.Measurement,
+					Calories = Convert.ToInt32(Math.Round(ingredient.Calories * currentRecipe.GetScale())), // Scale calories
+					FoodGroup = ingredient.FoodGroup
+				};
+				scaledIngredients.Add(scaledIngredient);
 			}
-			else
-			{
-				CalorieCountText.Text = $"Total Calories: {calories}";
-			}
+
+			return scaledIngredients;
 		}
 
-		private void EditRecipe_Click(object sender, RoutedEventArgs e)
-		{
-			var editRecipeWindow = new CreateRecipeWindow(currentRecipe);
-			editRecipeWindow.RecipeEdited += EditRecipeWindow_RecipeEdited;
-			editRecipeWindow.ShowDialog();
-		}
-
-		private void EditRecipeWindow_RecipeEdited(object sender, Recipe editedRecipe)
-		{
-			// Update the current recipe with changes
-			currentRecipe = editedRecipe;
-
-			// Refresh DataContext to reflect changes
-			DataContext = null; // Reset DataContext
-			DataContext = currentRecipe; // Assign new DataContext
-
-			// Update the calorie count text with the new value
-			UpdateCalorieCountText(currentRecipe.TotalCalories);
-
-			// Rebind ListBox items sources
-			RebindIngredientsListBox();
-			RebindStepsListBox();
-		}
-
-		private void RebindIngredientsListBox()
-		{
-			IngredientsListBox.ItemsSource = null;
-			IngredientsListBox.ItemsSource = currentRecipe.Ingredients;
-		}
-
-		private void RebindStepsListBox()
-		{
-			StepsListBox.ItemsSource = null; // Clear existing binding
-			StepsListBox.ItemsSource = currentRecipe.RecipeSteps; // Rebind to updated collection
-		}
 	}
 }
