@@ -1,4 +1,5 @@
 ﻿using PROG6221_POE_ST10257863_JamieParker.Classes;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,42 +30,68 @@ namespace RecipeManagerWPF
 			StepsListBox.ItemsSource = currentRecipe.RecipeSteps;
 		}
 
+
+
+
+
 		private void IngredientsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			HandleListBoxSelectionChange(IngredientsListBox, e);
+			foreach (var item in e.AddedItems)
+			{
+				ToggleTextColor(IngredientsListBox, item, true); // Toggle text color to gray when selected
+			}
 		}
 
 		private void StepsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			HandleListBoxSelectionChange(StepsListBox, e);
-		}
-
-		private void HandleListBoxSelectionChange(ListBox listBox, SelectionChangedEventArgs e)
-		{
-			if (e.AddedItems.Count > 0)
+			foreach (var item in e.AddedItems)
 			{
-				foreach (var item in e.AddedItems)
-				{
-					ToggleTextColor(listBox, item, true); // Toggle text color to gray when selected
-				}
-			}
-			if (e.RemovedItems.Count > 0)
-			{
-				foreach (var item in e.RemovedItems)
-				{
-					ToggleTextColor(listBox, item, false); // Toggle text color back to black when deselected
-				}
+				ToggleTextColor(StepsListBox, item, true); // Toggle text color to gray when selected
 			}
 		}
 
 		private void ToggleTextColor(ListBox listBox, object item, bool isSelected)
 		{
-			var textBlock = listBox.ItemContainerGenerator.ContainerFromItem(item) as TextBlock;
-			if (textBlock != null)
+			var listBoxItem = listBox.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+			if (listBoxItem != null)
 			{
-				textBlock.Foreground = isSelected ? Brushes.DarkGreen : Brushes.Black;
+				var textBlock = FindVisualChild<TextBlock>(listBoxItem);
+				if (textBlock != null)
+				{
+
+					if (textBlock.Foreground == Brushes.Black)
+						textBlock.Foreground = Brushes.DarkGray;
+					// Toggle text color to gray if not already gray
+					else if (textBlock.Foreground == Brushes.DarkGray)
+						textBlock.Foreground = Brushes.Black;
+
+				}
 			}
 		}
+
+		private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+		{
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+			{
+				var child = VisualTreeHelper.GetChild(parent, i);
+				if (child != null && child is T typedChild)
+				{
+					return typedChild;
+				}
+				else
+				{
+					T childOfChild = FindVisualChild<T>(child);
+					if (childOfChild != null)
+						return childOfChild;
+				}
+			}
+			return null;
+		}
+
+
+
+
+
 
 		private void Recipe_CalorieCountExceeded(int calories)
 		{
@@ -91,6 +118,7 @@ namespace RecipeManagerWPF
 			editRecipeWindow.RecipeEdited += EditRecipeWindow_RecipeEdited;
 			editRecipeWindow.ShowDialog();
 		}
+
 		private void EditRecipeWindow_RecipeEdited(object sender, Recipe editedRecipe)
 		{
 			// Update the current recipe with changes
@@ -110,8 +138,20 @@ namespace RecipeManagerWPF
 
 		private void RebindIngredientsListBox()
 		{
+			var selectedItems = IngredientsListBox.SelectedItems.Cast<object>().ToList();
+
 			IngredientsListBox.ItemsSource = null; // Clear existing binding
 			IngredientsListBox.ItemsSource = currentRecipe.Ingredients; // Rebind to updated collection
+
+			// Reapply selection
+			foreach (var item in selectedItems)
+			{
+				if (IngredientsListBox.Items.Contains(item))
+				{
+					IngredientsListBox.SelectedItems.Add(item);
+					ToggleTextColor(IngredientsListBox, item, true); // Ensure text color is gray
+				}
+			}
 		}
 
 		private void RebindStepsListBox()
