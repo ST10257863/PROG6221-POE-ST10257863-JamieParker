@@ -1,0 +1,93 @@
+﻿<Window x:Class="RecipeManagerWPF.FilterRecipeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Filter Recipe Window" 
+        Height="450" 
+        Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Toggle Buttons for Filter Options -->
+        <StackPanel Grid.Column="0" Margin="0,0,20,0">
+            <ToggleButton x:Name="NameFilterToggleButton"
+                          Content="Name"
+                          Margin="0,0,0,10"
+                          Click="FilterToggleButton_Click"/>
+            
+            <ToggleButton x:Name="IngredientsFilterToggleButton"
+                          Content="Ingredients"
+                          Margin="0,0,0,10"
+                          Click="FilterToggleButton_Click"/>
+            
+            <ToggleButton x:Name="FoodGroupFilterToggleButton"
+                          Content="Food Group"
+                          Margin="0,0,0,10"
+                          Click="FilterToggleButton_Click"/>
+            
+            <ToggleButton x:Name="MaxCaloriesFilterToggleButton"
+                          Content="Maximum Calories"
+                          Margin="0,0,0,10"
+                          Click="FilterToggleButton_Click"/>
+        </StackPanel>
+
+        <!-- Filter Controls -->
+        <StackPanel Grid.Column="1" Margin="0,0,10,0">
+            <!-- Name Filter -->
+            <TextBlock x:Name="NameFilterTextBlock"
+                       Text="Enter Recipe Name:"
+                       Margin="0,0,0,5"
+                       Visibility="Collapsed"/>
+            
+            <TextBox x:Name="NameFilterTextBox"
+                     Margin="0,0,0,10"
+                     Visibility="Collapsed"/>
+
+            <!-- Ingredients Filter -->
+            <TextBlock x:Name="IngredientsFilterTextBlock"
+                       Text="Enter Ingredients (comma-separated):"
+                       Margin="0,0,0,5"
+                       Visibility="Collapsed"/>
+            
+            <TextBox x:Name="IngredientsFilterTextBox"
+                     Margin="0,0,0,10"
+                     Visibility="Collapsed"/>
+
+            <!-- Food Group Filter -->
+            <TextBlock x:Name="FoodGroupFilterTextBlock"
+                       Text="Select Food Group:"
+                       Margin="0,0,0,5"
+                       Visibility="Collapsed"/>
+            
+            <ComboBox x:Name="FoodGroupFilterComboBox"
+                      Margin="0,0,0,10"
+                      Visibility="Collapsed">
+
+                <ComboBoxItem Content="Dairy"/>
+                <ComboBoxItem Content="Protein"/>
+                <ComboBoxItem Content="Vegetables"/>
+                <ComboBoxItem Content="Fruits"/>
+                <ComboBoxItem Content="Grains"/>
+            </ComboBox>
+
+            <!-- Maximum Calories Filter -->
+            <TextBlock x:Name="MaxCaloriesFilterTextBlock"
+                       Text="Enter Maximum Calories:"
+                       Margin="0,0,0,5"
+                       Visibility="Collapsed"/>
+            
+            <TextBox x:Name="MaxCaloriesFilterTextBox"
+                     Margin="0,0,0,10"
+                     Visibility="Collapsed"/>
+
+            <!-- Filter Button -->
+            <Button x:Name="FilterButton"
+                    Content="Filter"
+                    HorizontalAlignment="Right"
+                    Click="FilterButton_Click"
+                    Margin="0,20,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

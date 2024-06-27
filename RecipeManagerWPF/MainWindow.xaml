@@ -9,50 +9,81 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <StackPanel Orientation="Horizontal" 
-            HorizontalAlignment="Left" 
-            Margin="10" 
-            Grid.Row="0">
+                    HorizontalAlignment="Left" 
+                    Margin="10" 
+                    Grid.Row="0">
             <Button x:Name="CreateRecipeButton" 
-                Content="Create Recipe" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                Width="100" 
-                Margin="10,10,10,10" 
-                Grid.Row="0"
-                Click="CreateRecipeButton_Click"/>
+                    Content="Create Recipe" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" 
+                    Width="100" 
+                    Margin="10,10,10,10" 
+                    Click="CreateRecipeButton_Click"/>
 
             <Button x:Name="SelectRecipeButton" 
-                Content="Select Recipe" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                Width="100" 
-                Margin="10,10,10,10"
-                Grid.Row="0"
-                Click="SelectRecipeButton_Click"/>
+                    Content="Select Recipe" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" 
+                    Width="100" 
+                    Margin="10,10,10,10"
+                    Click="SelectRecipeButton_Click"/>
 
             <Button x:Name="RefreshRecipesButton" 
-                Content="Refresh Recipes" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center"
-                Width="100" 
-                Margin="10,10,10,10"
-                Grid.Row="0"
-                Click="RefreshRecipesButton_Click"/>
+                    Content="Refresh Recipes" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"
+                    Width="100" 
+                    Margin="10,10,10,10"
+                    Click="RefreshRecipesButton_Click"/>
         </StackPanel>
-        <Button x:Name="FillRecipes" 
-                Content="Fill Recipes" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Center"
-                Width="100" 
-                Margin="10,10,10,10"
-                Grid.Row="0"
-                Click="FillRecipes_Click"/>
+
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="10" 
+                    Grid.Row="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+
+                <!--<Button x:Name="FillRecipes" 
+                        Content="Fill Recipes" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"
+                        Width="100" 
+                        Margin="10,10,10,10"
+                        Grid.Row="0"
+                        Click="FillRecipes_Click"/>-->
+
+                <Button x:Name="FilterRecipes"
+                        Content="Filter Recipes"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"
+                        Width="100" 
+                        Margin="10,10,10,10"
+                        Grid.Row="1"
+                        Click="FilterRecipes_Click"/>
+
+                <Button x:Name="ClearFilterRecipes"
+                        Content="Clear Filter"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"
+                        Width="100"
+                        Margin="10,10,10,10"
+                        Grid.Row="2"
+                        Click="ClearFilterRecipes_Click"/>
+            </Grid>
+        </StackPanel>
 
         <ListBox x:Name="RecipesListBox" 
                  HorizontalAlignment="Stretch" 
                  VerticalAlignment="Stretch"
-                 Margin="10,10,10,10"
+                 Margin="10"
                  Grid.Row="1"/>
     </Grid>
 </Window>
