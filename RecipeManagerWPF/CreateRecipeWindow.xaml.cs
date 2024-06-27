@@ -1,4 +1,5 @@
 ﻿using PROG6221_POE_ST10257863_JamieParker.Classes;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -9,18 +10,42 @@ namespace RecipeManagerWPF
 {
 	public partial class CreateRecipeWindow : Window
 	{
-		private List<Ingredient> ingredients = new List<Ingredient>();
-		private List<string> steps = new List<string>();
+		private List<Ingredient> ingredients;
+		private List<string> steps;
+		private Recipe currentRecipe;
 
 		public Recipe NewRecipe
 		{
 			get; private set;
 		}
 
+		// Event declaration
+		public event EventHandler<Recipe> RecipeEdited;
+
 		public CreateRecipeWindow()
 		{
 			InitializeComponent();
+			ingredients = new List<Ingredient>();
+			steps = new List<string>();
 			SetPlaceholder(RecipeNameTextBox, "Recipe Name");
+		}
+
+		public CreateRecipeWindow(Recipe recipe) : this()
+		{
+			currentRecipe = recipe;
+			RecipeNameTextBox.Text = recipe.RecipeName;
+			ingredients = recipe.Ingredients;
+			steps = recipe.RecipeSteps;
+
+			foreach (var ingredient in ingredients)
+			{
+				IngredientsListBox.Items.Add(ingredient.Name);
+			}
+
+			foreach (var step in steps)
+			{
+				StepsListBox.Items.Add(step);
+			}
 		}
 
 		private void SetPlaceholder(TextBox textBox, string placeholder)
@@ -75,12 +100,25 @@ namespace RecipeManagerWPF
 
 		private void SaveRecipeButton_Click(object sender, RoutedEventArgs e)
 		{
-			NewRecipe = new Recipe
+			if (currentRecipe == null)
 			{
-				RecipeName = RecipeNameTextBox.Text,
-				Ingredients = ingredients,
-				RecipeSteps = steps
-			};
+				NewRecipe = new Recipe
+				{
+					RecipeName = RecipeNameTextBox.Text,
+					Ingredients = ingredients,
+					RecipeSteps = steps
+				};
+			}
+			else
+			{
+				currentRecipe.RecipeName = RecipeNameTextBox.Text;
+				currentRecipe.Ingredients = ingredients;
+				currentRecipe.RecipeSteps = steps;
+				NewRecipe = currentRecipe;
+			}
+			// Trigger the RecipeEdited event
+			RecipeEdited?.Invoke(this, NewRecipe);
+
 			this.DialogResult = true;
 			this.Close();
 		}
