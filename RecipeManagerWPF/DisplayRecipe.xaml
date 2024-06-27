@@ -43,7 +43,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Margin="10,0,0,0"
-                       Text="{Binding DisplayText}"
+                       Text="{Binding Name}"
                        Foreground="{Binding TextColor}">
                     </TextBlock>
                 </DataTemplate>

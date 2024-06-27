@@ -138,20 +138,8 @@ namespace RecipeManagerWPF
 
 		private void RebindIngredientsListBox()
 		{
-			var selectedItems = IngredientsListBox.SelectedItems.Cast<object>().ToList();
-
-			IngredientsListBox.ItemsSource = null; // Clear existing binding
-			IngredientsListBox.ItemsSource = currentRecipe.Ingredients; // Rebind to updated collection
-
-			// Reapply selection
-			foreach (var item in selectedItems)
-			{
-				if (IngredientsListBox.Items.Contains(item))
-				{
-					IngredientsListBox.SelectedItems.Add(item);
-					ToggleTextColor(IngredientsListBox, item, true); // Ensure text color is gray
-				}
-			}
+			IngredientsListBox.ItemsSource = null;
+			IngredientsListBox.ItemsSource = currentRecipe.Ingredients;
 		}
 
 		private void RebindStepsListBox()
