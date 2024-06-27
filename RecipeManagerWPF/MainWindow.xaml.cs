@@ -73,6 +73,8 @@ namespace RecipeManagerWPF
 
 		private void RefreshRecipesButton_Click(object sender, RoutedEventArgs e)
 		{
+			ClearDuplicates();
+			filteredRecipes = recipes;
 			RefreshRecipesList();
 		}
 
