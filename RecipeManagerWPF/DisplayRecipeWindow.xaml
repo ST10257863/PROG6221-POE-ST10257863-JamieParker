@@ -21,38 +21,52 @@
                  VerticalAlignment="Center"
                  Margin="10,10,10,10"
                  Grid.Row="0"/>
+        <StackPanel HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="EditRecipe" 
+                        Content="Edit Recipe" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"
+                        Width="100" 
+                        Margin="10,10,10,10"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Click="EditRecipe_Click"/>
 
-        <Button x:Name="EditRecipe" 
-                Content="Edit Recipe" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Center"
-                Width="100" 
-                Margin="10,10,10,10"
-                Grid.Row="0"
-                Click="EditRecipe_Click"/>
+                <ComboBox x:Name="ScaleComboBox"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Width="100"
+                          Margin="10,10,10,10"
+                          Grid.Row="1"
+                          Grid.Column="0"
+                          SelectedIndex="1">
+                    <ComboBoxItem Content="0.5"/>
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                </ComboBox>
 
-        <ComboBox x:Name="ScaleComboBox"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Center"
-                  Width="100"
-                  Margin="10,10,10,10"
-                  Grid.Row="0"
-                  SelectedIndex="1">
-            <ComboBoxItem Content="0.5"/>
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="2"/>
-            <ComboBoxItem Content="3"/>
-        </ComboBox>
-
-        <Button x:Name="ScaleRecipe"
-                Content="Scale"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Width="60"
-                Margin="10,10,10,10"
-                Grid.Row="0"
-                Click="ScaleRecipe_Click"/>
-
+                <Button x:Name="ScaleRecipe"
+                        Content="Scale"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Width="60"
+                        Margin="10,10,10,10"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Click="ScaleRecipe_Click"/>
+            </Grid>
+        </StackPanel>
         <ListBox x:Name="IngredientsListBox" 
          Grid.Row="1" 
          Margin="10,10,10,10" 
