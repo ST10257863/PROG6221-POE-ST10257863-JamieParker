@@ -8,8 +8,8 @@ namespace RecipeManagerWPF
 {
 	public partial class MainWindow : Window
 	{
-		private List<Recipe> recipes = new List<Recipe>();
-		private List<Recipe> filteredRecipes = new List<Recipe>();
+		private List<Recipe> recipes = new List<Recipe>(); // List to hold all recipes
+		private List<Recipe> filteredRecipes = new List<Recipe>(); // List to hold filtered recipes
 
 		public MainWindow()
 		{
@@ -17,8 +17,8 @@ namespace RecipeManagerWPF
 
 			// Auto-fill recipes when the window is opened
 			AddSampleRecipes();
-			ClearDuplicates();
-			RefreshRecipesList();
+			ClearDuplicates(); // Remove duplicate recipes if any
+			RefreshRecipesList(); // Refresh the recipes list in the UI
 		}
 
 		#region Event Handlers
@@ -27,11 +27,12 @@ namespace RecipeManagerWPF
 		{
 			var createRecipeWindow = new CreateRecipeWindow();
 			createRecipeWindow.ShowDialog();
+
 			if (createRecipeWindow.NewRecipe != null)
 			{
-				recipes.Add(createRecipeWindow.NewRecipe);
-				ClearDuplicates();
-				RefreshRecipesList();
+				recipes.Add(createRecipeWindow.NewRecipe); // Add new recipe to the list
+				ClearDuplicates(); // Remove duplicates after adding
+				RefreshRecipesList(); // Refresh displayed recipes
 			}
 		}
 
@@ -52,7 +53,7 @@ namespace RecipeManagerWPF
 
 						if (selectedRecipe != null)
 						{
-							DisplayRecipeDetails(selectedRecipe); // Call DisplayRecipeDetails here
+							DisplayRecipeDetails(selectedRecipe); // Display details of the selected recipe
 						}
 						else
 						{
@@ -74,13 +75,13 @@ namespace RecipeManagerWPF
 		private void RefreshRecipesButton_Click(object sender, RoutedEventArgs e)
 		{
 			ClearDuplicates();
-			filteredRecipes = recipes;
+			filteredRecipes = recipes; // Refresh filtered recipes with all recipes
 			RefreshRecipesList();
 		}
 
 		private void FillRecipes_Click(object sender, RoutedEventArgs e)
 		{
-			AddSampleRecipes();
+			AddSampleRecipes(); // Add sample recipes
 			ClearDuplicates();
 			RefreshRecipesList();
 		}
@@ -90,6 +91,7 @@ namespace RecipeManagerWPF
 			var filterRecipeWindow = new FilterRecipeWindow();
 			if (filterRecipeWindow.ShowDialog() == true)
 			{
+				// Apply the filter based on user selections
 				ApplyFilter(filterRecipeWindow.FilterName, filterRecipeWindow.FilterIngredients, filterRecipeWindow.FilterFoodGroup, filterRecipeWindow.FilterMaxCalories);
 			}
 		}
@@ -97,85 +99,7 @@ namespace RecipeManagerWPF
 		private void ClearFilterRecipes_Click(object sender, RoutedEventArgs e)
 		{
 			ClearDuplicates();
-			filteredRecipes = recipes;
-			RefreshRecipesList();
-		}
-
-		private void ApplyFilter(string name, string ingredients, string foodGroup, int? maxCalories)
-		{
-			filteredRecipes = new List<Recipe>();
-
-			foreach (var recipe in recipes)
-			{
-				bool matchesName = string.IsNullOrEmpty(name) || recipe.RecipeName.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0;
-
-				bool matchesIngredients = string.IsNullOrEmpty(ingredients);
-				if (!matchesIngredients)
-				{
-					string[] ingredientArray = ingredients.Split(',');
-					bool anyIngredientMatched = false;
-
-					foreach (var ing in ingredientArray)
-					{
-						bool ingredientMatched = false;
-
-						foreach (var ingredient in recipe.Ingredients)
-						{
-							// Check if the ingredient name contains the search term (case insensitive)
-							if (ingredient.Name.IndexOf(ing.Trim(), StringComparison.OrdinalIgnoreCase) >= 0)
-							{
-								ingredientMatched = true;
-								break;
-							}
-						}
-
-						if (ingredientMatched)
-						{
-							anyIngredientMatched = true;
-							break; // Found a matching ingredient, no need to check further
-						}
-					}
-
-					matchesIngredients = anyIngredientMatched;
-				}
-
-				bool matchesFoodGroup = string.IsNullOrEmpty(foodGroup);
-				if (!matchesFoodGroup)
-				{
-					string[] foodGroupArray = foodGroup.Split(',');
-					bool anyFoodGroupMatched = false;
-
-					foreach (var group in foodGroupArray)
-					{
-						string searchFoodGroup = group.Trim().ToLower();
-
-						foreach (var ingredient in recipe.Ingredients)
-						{
-							// Check if any ingredient in the recipe matches the specified food group
-							if (ingredient.FoodGroup.Equals(searchFoodGroup, StringComparison.OrdinalIgnoreCase))
-							{
-								anyFoodGroupMatched = true;
-								break; // Found a matching food group, no need to check further
-							}
-						}
-
-						if (anyFoodGroupMatched)
-						{
-							matchesFoodGroup = true;
-							break; // Found a matching food group, no need to check further
-						}
-					}
-				}
-
-				bool matchesMaxCalories = !maxCalories.HasValue || recipe.Ingredients.Sum(i => i.Calories) <= maxCalories;
-
-				// Combine conditions for adding to filtered recipes
-				if (matchesName && matchesIngredients && matchesFoodGroup && matchesMaxCalories)
-				{
-					filteredRecipes.Add(recipe);
-				}
-			}
-
+			filteredRecipes = recipes; // Clear filtering and display all recipes
 			RefreshRecipesList();
 		}
 
@@ -185,37 +109,33 @@ namespace RecipeManagerWPF
 
 		private void DisplayRecipeDetails(Recipe recipe)
 		{
-			DisplayRecipe detailsWindow = new DisplayRecipe(recipe);
+			DisplayRecipe detailsWindow = new DisplayRecipe(recipe); // Display detailed view of the recipe
 			detailsWindow.ShowDialog();
 		}
 
 		private void RefreshRecipesList()
 		{
-			ClearDuplicates();
+			ClearDuplicates(); // Remove any duplicates
 
-			// Create a list to hold the formatted recipe names with calories
+			// Create a list to hold formatted recipe names with calories
 			List<string> recipeNamesWithCalories = new List<string>();
 
-			// Iterate through filteredRecipes and construct the formatted string for each recipe
+			// Iterate through filtered recipes and format the display string
 			foreach (var recipe in filteredRecipes)
 			{
-				double totalCalories = 0;
-				foreach (var ingredient in recipe.Ingredients)
-				{
-					totalCalories += ingredient.Calories;
-				}
+				double totalCalories = recipe.Ingredients.Sum(i => i.Calories); // Calculate total calories for each recipe
 
+				// Format the string to display recipe name and total calories
 				string recipeNameWithCalories = $"{recipe.RecipeName} - Calories: {totalCalories}";
-				recipeNamesWithCalories.Add(recipeNameWithCalories);
+				recipeNamesWithCalories.Add(recipeNameWithCalories); // Add to list
 			}
 
-			// Sort the list alphabetically by recipe names
+			// Sort recipe names alphabetically
 			recipeNamesWithCalories.Sort();
 
-			// Set the ItemsSource of RecipesListBox to the sorted list of recipe names with calories
+			// Set ItemsSource of ListBox to sorted recipe names
 			RecipesListBox.ItemsSource = recipeNamesWithCalories;
 		}
-
 		private void AddSampleRecipes()
 		{
 			recipes.Add(new Recipe
@@ -370,15 +290,77 @@ namespace RecipeManagerWPF
 
 		private void ClearDuplicates()
 		{
+			// Remove duplicate recipes based on recipe name
 			List<Recipe> uniqueRecipes = new List<Recipe>();
 			foreach (Recipe recipe in recipes)
 			{
 				if (!uniqueRecipes.Any(r => r.RecipeName == recipe.RecipeName))
 				{
-					uniqueRecipes.Add(recipe);
+					uniqueRecipes.Add(recipe); // Add unique recipes to the list
 				}
 			}
-			recipes = uniqueRecipes;
+			recipes = uniqueRecipes; // Update recipes list without duplicates
+		}
+
+		private void ApplyFilter(string name, string ingredients, string foodGroup, int? maxCalories)
+		{
+			filteredRecipes = new List<Recipe>(); // Clear previous filtered recipes
+
+			foreach (var recipe in recipes)
+			{
+				// Check if recipe matches filter criteria
+				bool matchesName = string.IsNullOrEmpty(name) || recipe.RecipeName.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0;
+
+				bool matchesIngredients = string.IsNullOrEmpty(ingredients);
+				if (!matchesIngredients)
+				{
+					string[] ingredientArray = ingredients.Split(',');
+					bool anyIngredientMatched = false;
+
+					foreach (var ing in ingredientArray)
+					{
+						bool ingredientMatched = recipe.Ingredients.Any(i => i.Name.IndexOf(ing.Trim(), StringComparison.OrdinalIgnoreCase) >= 0);
+						if (ingredientMatched)
+						{
+							anyIngredientMatched = true;
+							break;
+						}
+					}
+
+					matchesIngredients = anyIngredientMatched;
+				}
+
+				bool matchesFoodGroup = string.IsNullOrEmpty(foodGroup);
+				if (!matchesFoodGroup)
+				{
+					string[] foodGroupArray = foodGroup.Split(',');
+					bool anyFoodGroupMatched = false;
+
+					foreach (var group in foodGroupArray)
+					{
+						string searchFoodGroup = group.Trim().ToLower();
+
+						bool foodGroupMatched = recipe.Ingredients.Any(i => i.FoodGroup.Equals(searchFoodGroup, StringComparison.OrdinalIgnoreCase));
+						if (foodGroupMatched)
+						{
+							anyFoodGroupMatched = true;
+							break;
+						}
+					}
+
+					matchesFoodGroup = anyFoodGroupMatched;
+				}
+
+				bool matchesMaxCalories = !maxCalories.HasValue || recipe.Ingredients.Sum(i => i.Calories) <= maxCalories;
+
+				// Add recipe to filtered list if all criteria are matched
+				if (matchesName && matchesIngredients && matchesFoodGroup && matchesMaxCalories)
+				{
+					filteredRecipes.Add(recipe);
+				}
+			}
+
+			RefreshRecipesList(); // Refresh displayed recipes based on filters
 		}
 
 		#endregion
