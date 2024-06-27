@@ -34,24 +34,18 @@
 
 
         <ListBox x:Name="IngredientsListBox" 
-                 Grid.Row="1" 
-                 Margin="10,10,10,10" 
-                 MinHeight="100" 
-                 MaxHeight="200"
-                 ItemsSource="{Binding Ingredients}">
+         Grid.Row="1" 
+         Margin="10,10,10,10" 
+         MinHeight="100" 
+         MaxHeight="200"
+         ItemsSource="{Binding Ingredients}"
+         SelectionChanged="IngredientsListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Margin="10,0,0,0">
-                            <Run Text="{Binding Name}" FontWeight="Bold"/>
-                            <Run Text="{Binding Amount}"/>
-                            <Run Text="{Binding Measurement}"/>
-                        </TextBlock>
-                        <TextBlock Margin="10,0,0,0">
-                            <Run Text="{Binding Calories}"/>
-                            <Run Text=" Calories"/>
-                        </TextBlock>
-                    </StackPanel>
+                    <TextBlock Margin="10,0,0,0"
+                       Text="{Binding DisplayText}"
+                       Foreground="{Binding TextColor}">
+                    </TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -65,14 +59,18 @@
            Grid.Row="2"/>
 
         <ListBox x:Name="StepsListBox" 
-                 Grid.Row="3" 
-                 Margin="10,30,10,10" 
-                 MinHeight="100" 
-                 MaxHeight="200"
-                 ItemsSource="{Binding RecipeSteps}">
+         Grid.Row="3" 
+         Margin="10,30,10,10" 
+         MinHeight="100" 
+         MaxHeight="200"
+         ItemsSource="{Binding RecipeSteps}"
+         SelectionChanged="StepsListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding}" 
+                       TextWrapping="Wrap"
+                       Foreground="{Binding TextColor}">
+                    </TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

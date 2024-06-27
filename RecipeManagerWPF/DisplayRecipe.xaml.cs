@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace RecipeManagerWPF
@@ -29,7 +28,44 @@ namespace RecipeManagerWPF
 			IngredientsListBox.ItemsSource = currentRecipe.Ingredients;
 			StepsListBox.ItemsSource = currentRecipe.RecipeSteps;
 		}
-	
+
+		private void IngredientsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			HandleListBoxSelectionChange(IngredientsListBox, e);
+		}
+
+		private void StepsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			HandleListBoxSelectionChange(StepsListBox, e);
+		}
+
+		private void HandleListBoxSelectionChange(ListBox listBox, SelectionChangedEventArgs e)
+		{
+			if (e.AddedItems.Count > 0)
+			{
+				foreach (var item in e.AddedItems)
+				{
+					ToggleTextColor(listBox, item, true); // Toggle text color to gray when selected
+				}
+			}
+			if (e.RemovedItems.Count > 0)
+			{
+				foreach (var item in e.RemovedItems)
+				{
+					ToggleTextColor(listBox, item, false); // Toggle text color back to black when deselected
+				}
+			}
+		}
+
+		private void ToggleTextColor(ListBox listBox, object item, bool isSelected)
+		{
+			var textBlock = listBox.ItemContainerGenerator.ContainerFromItem(item) as TextBlock;
+			if (textBlock != null)
+			{
+				textBlock.Foreground = isSelected ? Brushes.DarkGreen : Brushes.Black;
+			}
+		}
+
 		private void Recipe_CalorieCountExceeded(int calories)
 		{
 			// Update the text whenever CalorieCountExceeded event is triggered
