@@ -1,11 +1,11 @@
 # Project Update: Implemented Feedback Changes
 
-In response to the feedback, several critical improvements have been made to the project. Firstly, the application has been updated to target .NET Framework 4.8 and necessary references have been added. Error handling has been enhanced to manage null values, incorrect value types, and to display appropriate error messages to the user. The layout has been improved by adding sufficient spacing between input and output sections, and incorporating lines to better organize the UI. Advanced features, such as coloured text in the display, have been utilized to enhance user experience. A reset function has been implemented to revert scaled recipes back to their original values, and users are prompted to confirm before clearing any data. To adhere to coding standards, separator lines have been added between methods, an end-of-file line has been included, comments have been made more meaningful, and classes have been split into separate files for better organization.
+In response to the feedback, several critical improvements have been made to the project. Firstly, the application has been updated to a WPF-based UI, targeting .NET Framework 4.8 with necessary references added. Error handling has been enhanced to manage null values, incorrect value types, and to display appropriate error messages to the user. The layout has been improved by adding sufficient spacing between input and output sections, and incorporating lines to better organize the UI. Advanced features, such as coloured text in the display, have been utilized to enhance user experience. A reset function has been implemented to revert scaled recipes back to their original values, and users are prompted to confirm before clearing any data. To adhere to coding standards, separator lines have been added between methods, an end-of-file line has been included, comments have been made more meaningful, and classes have been split into separate files for better organization.
 
 # Recipe Management System
 
 ## Overview
-This project is a console-based recipe management system developed in C# using the .NET Framework 4.8. The application allows users to create, manage, and scale recipes while adhering to specific coding standards and implementing robust error handling.
+This project is a WPF-based recipe management system developed in C# using the .NET Framework 4.8. The application allows users to create, manage, and scale recipes while adhering to specific coding standards and implementing robust error handling.
 
 ## Features
 - **Create Recipes**: Users can create new recipes by entering a recipe name, ingredients, and preparation steps.
@@ -65,7 +65,7 @@ Feel free to fork the repository and submit pull requests. For major changes, pl
 ## License
 This project is licensed under the MIT License.
 
-## Refrences
+## References
 Troelsen, A. and Japikse, P. (2022) Pro C# 10 with .NET 6: Foundational Principles and Practices in Programming. 11th edn. Cham, Switzerland: Apress. Available at: https://doi.org/10.1007/978-1-4842-7869-7 (Accessed: 30 May 2024).
 
 Microsoft (2024) .NET documentation. Available at: https://learn.microsoft.com/en-us/dotnet/ (Accessed: 30 May 2024).
