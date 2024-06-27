@@ -42,13 +42,28 @@
          SelectionChanged="IngredientsListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Margin="10,0,0,0"
-                       Text="{Binding Name}"
-                       Foreground="{Binding TextColor}">
-                    </TextBlock>
+                    <StackPanel Margin="5">
+                        <TextBlock Foreground="{Binding TextColor}">
+                    <Run Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+                    <Run Text="{Binding Amount}"/>
+                    <Run Text="{Binding Measurement}"/>
+                        </TextBlock>
+                        <TextBlock Foreground="{Binding TextColor}">
+                    <Run Text="Calories:" FontWeight="Bold"/>
+                    <Run Text="{Binding Calories}"/>
+                        </TextBlock>
+                        <TextBlock Foreground="{Binding TextColor}">
+                    <Run Text="["/>
+                    <Run Text="{Binding FoodGroup}"/>
+                    <Run Text="]"/>
+                        </TextBlock>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+
+
 
         <TextBlock x:Name="CalorieCountText"
            Text=""

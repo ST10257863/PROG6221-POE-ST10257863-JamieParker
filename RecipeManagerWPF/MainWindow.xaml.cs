@@ -98,38 +98,63 @@ namespace RecipeManagerWPF
 				if (!matchesIngredients)
 				{
 					string[] ingredientArray = ingredients.Split(',');
+					bool anyIngredientMatched = false;
+
 					foreach (var ing in ingredientArray)
 					{
+						bool ingredientMatched = false;
+
 						foreach (var ingredient in recipe.Ingredients)
 						{
+							// Check if the ingredient name contains the search term (case insensitive)
 							if (ingredient.Name.IndexOf(ing.Trim(), StringComparison.OrdinalIgnoreCase) >= 0)
 							{
-								matchesIngredients = true;
+								ingredientMatched = true;
 								break;
 							}
 						}
-						if (matchesIngredients)
+
+						if (ingredientMatched)
 						{
-							break;
+							anyIngredientMatched = true;
+							break; // Found a matching ingredient, no need to check further
 						}
 					}
+
+					matchesIngredients = anyIngredientMatched;
 				}
 
 				bool matchesFoodGroup = string.IsNullOrEmpty(foodGroup);
 				if (!matchesFoodGroup)
 				{
-					foreach (var ingredient in recipe.Ingredients)
+					string[] foodGroupArray = foodGroup.Split(',');
+					bool anyFoodGroupMatched = false;
+
+					foreach (var group in foodGroupArray)
 					{
-						if (ingredient.FoodGroup.Equals(foodGroup, StringComparison.OrdinalIgnoreCase))
+						string searchFoodGroup = group.Trim().ToLower();
+
+						foreach (var ingredient in recipe.Ingredients)
+						{
+							// Check if any ingredient in the recipe matches the specified food group
+							if (ingredient.FoodGroup.Equals(searchFoodGroup, StringComparison.OrdinalIgnoreCase))
+							{
+								anyFoodGroupMatched = true;
+								break; // Found a matching food group, no need to check further
+							}
+						}
+
+						if (anyFoodGroupMatched)
 						{
 							matchesFoodGroup = true;
-							break;
+							break; // Found a matching food group, no need to check further
 						}
 					}
 				}
 
 				bool matchesMaxCalories = !maxCalories.HasValue || recipe.Ingredients.Sum(i => i.Calories) <= maxCalories;
 
+				// Combine conditions for adding to filtered recipes
 				if (matchesName && matchesIngredients && matchesFoodGroup && matchesMaxCalories)
 				{
 					filteredRecipes.Add(recipe);
@@ -138,6 +163,8 @@ namespace RecipeManagerWPF
 
 			RefreshRecipesList();
 		}
+
+
 		#endregion
 
 		#region Private Methods
@@ -163,9 +190,9 @@ namespace RecipeManagerWPF
 				RecipeName = "Lasagna",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Ground beef", Amount = 500, Measurement = "g", Calories = 800, FoodGroup = "Meat" },
-			new Ingredient { Name = "Lasagna noodles", Amount = 200, Measurement = "g", Calories = 600, FoodGroup = "Grain" },
-			new Ingredient { Name = "Tomato sauce", Amount = 400, Measurement = "ml", Calories = 200, FoodGroup = "Vegetable" },
+			new Ingredient { Name = "Ground beef", Amount = 500, Measurement = "g", Calories = 800, FoodGroup = "Protein" },
+			new Ingredient { Name = "Lasagna noodles", Amount = 200, Measurement = "g", Calories = 600, FoodGroup = "Grains" },
+			new Ingredient { Name = "Tomato sauce", Amount = 400, Measurement = "ml", Calories = 200, FoodGroup = "Vegetables" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -180,9 +207,9 @@ namespace RecipeManagerWPF
 				RecipeName = "Chocolate Cake",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Flour", Amount = 300, Measurement = "g", Calories = 1200, FoodGroup = "Grain" },
-			new Ingredient { Name = "Sugar", Amount = 200, Measurement = "g", Calories = 800, FoodGroup = "Sweetener" },
-			new Ingredient { Name = "Cocoa powder", Amount = 100, Measurement = "g", Calories = 300, FoodGroup = "Flavoring" },
+			new Ingredient { Name = "Flour", Amount = 300, Measurement = "g", Calories = 1200, FoodGroup = "Grains" },
+			new Ingredient { Name = "Sugar", Amount = 200, Measurement = "g", Calories = 800, FoodGroup = "Sweeteners" },
+			new Ingredient { Name = "Cocoa powder", Amount = 100, Measurement = "g", Calories = 300, FoodGroup = "Flavorings" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -198,10 +225,9 @@ namespace RecipeManagerWPF
 				RecipeName = "Chicken Stir-Fry",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Chicken breast", Amount = 400, Measurement = "g", Calories = 600, FoodGroup = "Meat" },
-			new Ingredient { Name = "Bell peppers", Amount = 300, Measurement = "g", Calories = 150, FoodGroup = "Vegetable" },
-			new Ingredient { Name = "Broccoli", Amount = 200, Measurement = "g", Calories = 100, FoodGroup = "Vegetable" },
-			new Ingredient { Name = "Soy sauce", Amount = 50, Measurement = "ml", Calories = 100, FoodGroup = "Condiment" },
+			new Ingredient { Name = "Chicken breast", Amount = 400, Measurement = "g", Calories = 600, FoodGroup = "Protein" },
+			new Ingredient { Name = "Bell peppers", Amount = 300, Measurement = "g", Calories = 150, FoodGroup = "Vegetables" },
+			new Ingredient { Name = "Broccoli", Amount = 200, Measurement = "g", Calories = 100, FoodGroup = "Vegetables" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -216,10 +242,9 @@ namespace RecipeManagerWPF
 				RecipeName = "Caprese Salad",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Tomatoes", Amount = 300, Measurement = "g", Calories = 100, FoodGroup = "Vegetable" },
+			new Ingredient { Name = "Tomatoes", Amount = 300, Measurement = "g", Calories = 100, FoodGroup = "Vegetables" },
 			new Ingredient { Name = "Fresh mozzarella", Amount = 200, Measurement = "g", Calories = 400, FoodGroup = "Dairy" },
-			new Ingredient { Name = "Basil leaves", Amount = 50, Measurement = "g", Calories = 50, FoodGroup = "Herb" },
-			new Ingredient { Name = "Balsamic vinegar", Amount = 30, Measurement = "ml", Calories = 50, FoodGroup = "Condiment" },
+			new Ingredient { Name = "Basil leaves", Amount = 50, Measurement = "g", Calories = 50, FoodGroup = "Herbs" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -234,11 +259,11 @@ namespace RecipeManagerWPF
 				RecipeName = "Beef Stroganoff",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Beef sirloin", Amount = 500, Measurement = "g", Calories = 1000, FoodGroup = "Meat" },
-			new Ingredient { Name = "Onion", Amount = 100, Measurement = "g", Calories = 50, FoodGroup = "Vegetable" },
-			new Ingredient { Name = "Mushrooms", Amount = 200, Measurement = "g", Calories = 100, FoodGroup = "Vegetable" },
+			new Ingredient { Name = "Beef sirloin", Amount = 500, Measurement = "g", Calories = 1000, FoodGroup = "Protein" },
+			new Ingredient { Name = "Onion", Amount = 100, Measurement = "g", Calories = 50, FoodGroup = "Vegetables" },
+			new Ingredient { Name = "Mushrooms", Amount = 200, Measurement = "g", Calories = 100, FoodGroup = "Vegetables" },
 			new Ingredient { Name = "Sour cream", Amount = 150, Measurement = "ml", Calories = 300, FoodGroup = "Dairy" },
-			new Ingredient { Name = "Egg noodles", Amount = 300, Measurement = "g", Calories = 400, FoodGroup = "Grain" },
+			new Ingredient { Name = "Egg noodles", Amount = 300, Measurement = "g", Calories = 400, FoodGroup = "Grains" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -253,11 +278,11 @@ namespace RecipeManagerWPF
 				RecipeName = "Greek Salad",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Cucumbers", Amount = 300, Measurement = "g", Calories = 50, FoodGroup = "Vegetable" },
+			new Ingredient { Name = "Cucumbers", Amount = 300, Measurement = "g", Calories = 50, FoodGroup = "Vegetables" },
 			new Ingredient { Name = "Feta cheese", Amount = 150, Measurement = "g", Calories = 300, FoodGroup = "Dairy" },
-			new Ingredient { Name = "Kalamata olives", Amount = 100, Measurement = "g", Calories = 150, FoodGroup = "Condiment" },
-			new Ingredient { Name = "Red onion", Amount = 100, Measurement = "g", Calories = 50, FoodGroup = "Vegetable" },
-			new Ingredient { Name = "Olive oil", Amount = 30, Measurement = "ml", Calories = 250, FoodGroup = "Oil" },
+			new Ingredient { Name = "Kalamata olives", Amount = 100, Measurement = "g", Calories = 150, FoodGroup = "Condiments" },
+			new Ingredient { Name = "Red onion", Amount = 100, Measurement = "g", Calories = 50, FoodGroup = "Vegetables" },
+			new Ingredient { Name = "Olive oil", Amount = 30, Measurement = "ml", Calories = 250, FoodGroup = "Oils" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -272,10 +297,10 @@ namespace RecipeManagerWPF
 				RecipeName = "Chicken Parmesan",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Chicken breast", Amount = 500, Measurement = "g", Calories = 700, FoodGroup = "Meat" },
-			new Ingredient { Name = "Bread crumbs", Amount = 100, Measurement = "g", Calories = 400, FoodGroup = "Grain" },
+			new Ingredient { Name = "Chicken breast", Amount = 500, Measurement = "g", Calories = 700, FoodGroup = "Protein" },
+			new Ingredient { Name = "Bread crumbs", Amount = 100, Measurement = "g", Calories = 400, FoodGroup = "Grains" },
 			new Ingredient { Name = "Parmesan cheese", Amount = 100, Measurement = "g", Calories = 400, FoodGroup = "Dairy" },
-			new Ingredient { Name = "Marinara sauce", Amount = 400, Measurement = "ml", Calories = 200, FoodGroup = "Vegetable" },
+			new Ingredient { Name = "Marinara sauce", Amount = 400, Measurement = "ml", Calories = 200, FoodGroup = "Vegetables" },
 		},
 				RecipeSteps = new List<string>
 		{
@@ -290,8 +315,8 @@ namespace RecipeManagerWPF
 				RecipeName = "Pasta Carbonara",
 				Ingredients = new List<Ingredient>
 		{
-			new Ingredient { Name = "Spaghetti", Amount = 300, Measurement = "g", Calories = 600, FoodGroup = "Grain" },
-			new Ingredient { Name = "Bacon", Amount = 150, Measurement = "g", Calories = 500, FoodGroup = "Meat" },
+			new Ingredient { Name = "Spaghetti", Amount = 300, Measurement = "g", Calories = 600, FoodGroup = "Grains" },
+			new Ingredient { Name = "Bacon", Amount = 150, Measurement = "g", Calories = 500, FoodGroup = "Protein" },
 			new Ingredient { Name = "Egg yolks", Amount = 3, Measurement = "pcs", Calories = 150, FoodGroup = "Dairy" },
 			new Ingredient { Name = "Parmesan cheese", Amount = 100, Measurement = "g", Calories = 400, FoodGroup = "Dairy" },
 		},
@@ -308,6 +333,7 @@ namespace RecipeManagerWPF
 			filteredRecipes = recipes;
 			RefreshRecipesList();
 		}
+
 
 		private void ClearDuplicates()
 		{
