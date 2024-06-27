@@ -39,12 +39,25 @@ namespace RecipeManagerWPF
 		{
 			try
 			{
-				if (RecipesListBox.SelectedItem is string selectedRecipeName)
+				// Ensure a recipe is selected
+				if (RecipesListBox.SelectedItem != null)
 				{
-					Recipe selectedRecipe = recipes.FirstOrDefault(r => r.RecipeName == selectedRecipeName);
-					if (selectedRecipe != null)
+					if (RecipesListBox.SelectedItem is string recipeNameWithCalories)
 					{
-						DisplayRecipeDetails(selectedRecipe);
+						// Extract the recipe name from the formatted string
+						string selectedRecipeName = recipeNameWithCalories.Split('-')[0].Trim();
+
+						// Find the recipe object in filteredRecipes or recipes
+						Recipe selectedRecipe = filteredRecipes.FirstOrDefault(r => r.RecipeName.Equals(selectedRecipeName, StringComparison.OrdinalIgnoreCase));
+
+						if (selectedRecipe != null)
+						{
+							DisplayRecipeDetails(selectedRecipe); // Call DisplayRecipeDetails here
+						}
+						else
+						{
+							MessageBox.Show("Selected recipe not found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+						}
 					}
 				}
 				else

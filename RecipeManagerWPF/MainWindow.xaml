@@ -51,14 +51,14 @@
                 </Grid.RowDefinitions>
                 
 
-                <!--<Button x:Name="FillRecipes" 
+                <Button x:Name="FillRecipes" 
                         Content="Fill Recipes" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Center"
                         Width="100" 
                         Margin="10,10,10,10"
                         Grid.Row="0"
-                        Click="FillRecipes_Click"/>-->
+                        Click="FillRecipes_Click"/>
 
                 <Button x:Name="FilterRecipes"
                         Content="Filter Recipes"
