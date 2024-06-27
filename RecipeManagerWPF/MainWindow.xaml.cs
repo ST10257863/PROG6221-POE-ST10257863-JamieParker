@@ -164,7 +164,6 @@ namespace RecipeManagerWPF
 			RefreshRecipesList();
 		}
 
-
 		#endregion
 
 		#region Private Methods
@@ -178,9 +177,28 @@ namespace RecipeManagerWPF
 		private void RefreshRecipesList()
 		{
 			ClearDuplicates();
-			List<string> recipeNames = filteredRecipes.Select(r => r.RecipeName).ToList();
-			recipeNames.Sort();
-			RecipesListBox.ItemsSource = recipeNames;
+
+			// Create a list to hold the formatted recipe names with calories
+			List<string> recipeNamesWithCalories = new List<string>();
+
+			// Iterate through filteredRecipes and construct the formatted string for each recipe
+			foreach (var recipe in filteredRecipes)
+			{
+				double totalCalories = 0;
+				foreach (var ingredient in recipe.Ingredients)
+				{
+					totalCalories += ingredient.Calories;
+				}
+
+				string recipeNameWithCalories = $"{recipe.RecipeName} - Calories: {totalCalories}";
+				recipeNamesWithCalories.Add(recipeNameWithCalories);
+			}
+
+			// Sort the list alphabetically by recipe names
+			recipeNamesWithCalories.Sort();
+
+			// Set the ItemsSource of RecipesListBox to the sorted list of recipe names with calories
+			RecipesListBox.ItemsSource = recipeNamesWithCalories;
 		}
 
 		private void AddSampleRecipes()
